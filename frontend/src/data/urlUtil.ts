@@ -2,17 +2,12 @@ let wsURL: string;
 let gqlURL: string;
 
 function populateURLs() {
-  let new_uri;
-  if (window.location.protocol === 'https:') {
-    new_uri = 'wss:';
-  } else {
-    new_uri = 'ws:';
-  }
+  let wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
   if (window.location.hostname === 'localhost') {
-    wsURL = `${new_uri}//${window.location.hostname}:8080/`;
+    wsURL = `${wsProtocol}//${window.location.hostname}:8080/socket`;
     gqlURL = `${window.location.protocol}//${window.location.hostname}:8080/graphql`;
   } else {
-    wsURL = `${new_uri}//${window.location.host}/`;
+    wsURL = `${wsProtocol}//${window.location.host}/socket`;
     gqlURL = `${window.location.protocol}//${window.location.host}/graphql`;
   }
 }

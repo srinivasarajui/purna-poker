@@ -13,7 +13,7 @@ const statusMap = {
 };
 
 export default function useGameSocket(userName: String, gameId: String) {
-  const socketUrl = `${getWsURL()}/socket/${userName}/${gameId}`;
+  const socketUrl = `${getWsURL()}/${userName}/${gameId}`;
   const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(socketUrl, {
     shouldReconnect: () => true,
   });
