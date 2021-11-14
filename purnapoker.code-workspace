@@ -1,0 +1,15 @@
+{
+  "folders": [
+    {
+      "path": "backend"
+    },
+    {
+      "path": "frontend"
+    }
+  ],
+  "settings": {
+    "workbench.colorTheme": "Cobalt2",
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "cSpell.words": ["Bson", "Purna", "Quarkus", "Srini", "testid"]
+  }
+}
