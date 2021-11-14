@@ -1,7 +1,9 @@
 import { ApolloClient, HttpLink, InMemoryCache, gql, useMutation, useQuery } from '@apollo/client';
 
+import { getGqlURL } from './urlUtil';
+
 const httpLink = new HttpLink({
-  uri: `${process.env.REACT_APP_BACKEND_URL}/graphql`,
+  uri: getGqlURL(),
 });
 
 export const clientGQL = new ApolloClient({

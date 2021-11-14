@@ -2,6 +2,8 @@ import { Game, Story } from './types';
 import { useEffect, useState } from 'react';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 
+import { getWsURL } from './urlUtil';
+
 const statusMap = {
   [ReadyState.CONNECTING]: 'Connecting',
   [ReadyState.OPEN]: 'Connected',
@@ -11,7 +13,7 @@ const statusMap = {
 };
 
 export default function useGameSocket(userName: String, gameId: String) {
-  const socketUrl = `${process.env.REACT_APP_WSS_URL}/socket/${userName}/${gameId}`;
+  const socketUrl = `${getWsURL()}/socket/${userName}/${gameId}`;
   const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(socketUrl, {
     shouldReconnect: () => true,
   });
