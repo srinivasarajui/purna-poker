@@ -17,14 +17,14 @@ function getCss(category: String): String {
 }
 export function StoryPointButtons(props: IStoryPointButtonsProps) {
   return (
-    <div className="btn-group">
+    <div>
       {props.points.map((point) => (
         <button
           type="button"
           data-testid={'storypointbuttons-' + point.storyPoints}
           key={point.storyPoints}
-          className={`btn btn-xs sm:btn-sm md:btn lg:btn-lg ${
-            point.storyPoints === props.currentPoints ? 'btn-active' : getCss(point.category)
+          className={` btn-lg btn-square ${
+            point.storyPoints === props.currentPoints ? 'btn-secondary' : getCss(point.category)
           }`}
           onClick={() => props.buttonClicked(point.storyPoints)}
         >
