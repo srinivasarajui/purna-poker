@@ -16,8 +16,18 @@ import io.smallrye.mutiny.Uni;
 public class GameQL {
 
   @Mutation
-  public Uni<Game> newGame(String name, String code) {
-    return Game.newGame(name, code);
+  public Uni<Game> newGame(String name, String code, String participantName) {
+    return Game.newGame(name, code, participantName);
+  }
+
+  @Mutation
+  public Uni<Game> addParticipant(@Name("id") String gameId, String name, String adminCode) {
+    Uni<Game> game = Game.findById(new ObjectId(gameId));
+    return game.onItem().transformToUni(g -> {
+      boolean isAdmin = adminCode.equals(g.adminCode);
+      g.addParticipant(name, isAdmin);
+      return g.persistOrUpdate();
+    });
   }
 
   @Query

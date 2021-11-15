@@ -23,7 +23,7 @@ export function StoryPointButtons(props: IStoryPointButtonsProps) {
           type="button"
           data-testid={'storypointbuttons-' + point.storyPoints}
           key={point.storyPoints}
-          className={` btn-lg btn-square ${
+          className={`text-lg btn-lg btn-square ${
             point.storyPoints === props.currentPoints ? 'btn-secondary' : getCss(point.category)
           }`}
           onClick={() => props.buttonClicked(point.storyPoints)}

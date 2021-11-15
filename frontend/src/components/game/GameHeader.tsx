@@ -11,6 +11,7 @@ export interface IGameHeaderProps {
   game: Game;
   userName: String;
   statusCode: String;
+  isAdmin: boolean;
   sendJsonMessage: SendJsonMessage;
 }
 
@@ -33,20 +34,27 @@ export function GameHeader(props: IGameHeaderProps) {
       <div className="flex flex-col flex-grow space-y-4">
         <div className="text-lg font-bold" data-testid="game-header-name">
           {props.game.name}{' '}
-          <button
-            type="button"
-            className="btn-xs"
-            onClick={() => {
-              setModalOpen(true);
-              setInitialText(props.game.name);
-            }}
-          >
-            <EditIcon />
-          </button>
+          {props.isAdmin && (
+            <button
+              type="button"
+              className="btn-xs"
+              onClick={() => {
+                setModalOpen(true);
+                setInitialText(props.game.name);
+              }}
+            >
+              <EditIcon />
+            </button>
+          )}
         </div>
         <div className="text-sm" data-testid="game-header-code">
           Game code: {props.game.idString} <CopyToClipBoardButton text={props.game.idString} />
         </div>
+        {props.isAdmin && (
+          <div className="text-sm" data-testid="game-header-code">
+            Admin code: {props.game.adminCode} <CopyToClipBoardButton text={props.game.adminCode} />
+          </div>
+        )}
       </div>
       <div className="flex flex-col gap-1">
         <div className="px-4 mx-8 indicator place-items-center">
@@ -61,36 +69,37 @@ export function GameHeader(props: IGameHeaderProps) {
           </div>
         </div>
 
-        {props.game.didGameStart ? (
-          <button
-            type="button"
-            className="btn"
-            disabled={props.game.stories.length === 0}
-            onClick={() => {
-              props.sendJsonMessage({
-                code: 'stopGame',
-              });
-            }}
-          >
-            <StopIcon />
-            stop the Game
-          </button>
-        ) : (
-          <button
-            type="button"
-            className="btn"
-            disabled={props.game.stories.length === 0}
-            onClick={() => {
-              props.sendJsonMessage({
-                code: 'startGame',
-                text: props.userName,
-              });
-            }}
-          >
-            <PlayIcon />
-            Start the Game
-          </button>
-        )}
+        {props.isAdmin &&
+          (props.game.didGameStart ? (
+            <button
+              type="button"
+              className="btn"
+              disabled={props.game.stories.length === 0}
+              onClick={() => {
+                props.sendJsonMessage({
+                  code: 'stopGame',
+                });
+              }}
+            >
+              <StopIcon />
+              stop the Game
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="btn"
+              disabled={props.game.stories.length === 0}
+              onClick={() => {
+                props.sendJsonMessage({
+                  code: 'startGame',
+                  text: props.userName,
+                });
+              }}
+            >
+              <PlayIcon />
+              Start the Game
+            </button>
+          ))}
       </div>
       {isModalOpen && (
         <TextInputPopup placeHolder="Name" isOpen={isModalOpen} initialText={initialText || ''} onAction={onAction} />

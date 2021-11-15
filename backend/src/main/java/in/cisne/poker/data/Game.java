@@ -8,6 +8,7 @@ import org.bson.codecs.pojo.annotations.BsonIgnore;
 
 import in.cisne.poker.PointsCache;
 import in.cisne.poker.util.ListUtil;
+import in.cisne.poker.util.StringUtil;
 import io.quarkus.mongodb.panache.reactive.ReactivePanacheMongoEntity;
 import io.smallrye.mutiny.Uni;
 
@@ -17,6 +18,8 @@ public class Game extends ReactivePanacheMongoEntity {
   public String controllerName;
   public String currentStoryId;
   public String votingSystemId;
+
+  public String adminCode;
 
   public List<Story> stories;
   public List<Participant> participants;
@@ -77,10 +80,25 @@ public class Game extends ReactivePanacheMongoEntity {
     });
   }
 
-  public static Uni<Game> newGame(String name, String votingSystemId) {
+  public void addParticipant(String name, boolean isAdmin) {
+
+    this.getParticipants().stream().filter(p -> name.equals(p.name)).findAny().ifPresentOrElse(p -> {
+      p.isAdmin = true;
+    }, () -> {
+      Participant p = new Participant();
+      p.isAdmin = true;
+      p.name = name;
+      this.getParticipants().add(p);
+    });
+
+  }
+
+  public static Uni<Game> newGame(String name, String votingSystemId, String participantName) {
     Game game = new Game();
     game.name = name;
     game.votingSystemId = votingSystemId;
+    game.adminCode = StringUtil.getRandomString();
+    game.addParticipant(participantName, true);
     return game.<Game>persist();
   }
 

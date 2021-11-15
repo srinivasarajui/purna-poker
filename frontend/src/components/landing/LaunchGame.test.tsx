@@ -31,7 +31,7 @@ describe('LaunchGame testing', () => {
     expect(button).not.toBeDisabled();
     await act(async () => button.click());
     //await new Promise((r) => setTimeout(r, 2000));
-    expect(mockIsValidateGameID.mock.calls.length).toBe(1);
+    expect(mock.mock.calls.length).toBe(1);
     expect(mockGoToGamePage.mock.calls.length).toBe(1);
   });
   test('check wrong entry', async () => {

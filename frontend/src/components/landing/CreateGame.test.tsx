@@ -45,7 +45,7 @@ describe('CreateGame testing', () => {
       {
         request: {
           query: NEW_GAME,
-          variables: { name: 'NEW Game', code: 'abcd' },
+          variables: { name: 'NEW Game', code: 'abcd', participantName: 'NEW User' },
         },
         result: {
           loading: false,
@@ -53,6 +53,7 @@ describe('CreateGame testing', () => {
             newGame: {
               name: 'New Game',
               idString: 'idString',
+              adminCode: 'adminCode',
             },
           },
         },

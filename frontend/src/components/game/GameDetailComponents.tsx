@@ -14,7 +14,10 @@ export interface IGameDetailCompProps {
 }
 
 export function GameDetailComp(props: IGameDetailCompProps) {
-  const { sendJsonMessage, game, story, storyPointsSelected, statusCode } = useGameSocket(props.userName, props.gameId);
+  const { sendJsonMessage, game, story, storyPointsSelected, statusCode, isAdmin } = useGameSocket(
+    props.userName,
+    props.gameId
+  );
   const { loading, data, getDisplay } = useGetVotingSystem(props.gameId);
 
   if (game && !loading) {
@@ -27,10 +30,11 @@ export function GameDetailComp(props: IGameDetailCompProps) {
               sendJsonMessage={sendJsonMessage}
               statusCode={statusCode || 'loading'}
               userName={props.userName}
+              isAdmin={isAdmin}
             />
             {game.didGameStart && story ? (
               <>
-                {props.userName === game.controllerName && (
+                {isAdmin && (
                   <div>
                     <GameActions
                       sendJsonMessage={sendJsonMessage}
@@ -42,6 +46,7 @@ export function GameDetailComp(props: IGameDetailCompProps) {
                 <div className="flex flex-col md:flex-row">
                   <div className="text-lg font-bold md:flex-grow">{story.description}</div>
                   <StoryLevelPointsCard
+                    isAdmin={isAdmin}
                     getDisplay={getDisplay}
                     storyPoints={story.storyPoints}
                     points={data?.votingSystem.points || []}
@@ -76,6 +81,7 @@ export function GameDetailComp(props: IGameDetailCompProps) {
               getDisplay={getDisplay}
               stories={game.stories}
               sendJsonMessage={sendJsonMessage}
+              isAdmin={isAdmin}
             ></StoryManager>
           </div>
         </div>

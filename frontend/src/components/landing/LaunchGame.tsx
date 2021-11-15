@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { isValidateGameID } from '../../data/gql';
-import { useRouter } from '../../data/routerUtil';
+
 import Alert from '../common/Alert';
+import { addParticipantMutation } from '../../data/gql';
+import { useRouter } from '../../data/routerUtil';
 
 export interface ILaunchGameProps {}
 
@@ -10,12 +11,13 @@ export function LaunchGame(props: ILaunchGameProps) {
   const [errorMessage, setErrorMessage] = useState<string[]>([]);
   const [gameID, setGameID] = useState('');
   const [userName, setUserName] = useState('');
+  const [adminCode, setAdminCode] = useState('');
   const [isButtonDisabled, setButtonDisabled] = useState(true);
   const [touched, setDidTouch] = useState(false);
   const onGoClick = async () => {
     setButtonDisabled(true);
     setErrorMessage(['GameID is being validated']);
-    const isValid = await isValidateGameID(gameID);
+    const isValid = await addParticipantMutation(gameID, userName, adminCode);
     if (isValid) {
       goToGamePage(gameID, userName);
     } else {
@@ -71,6 +73,22 @@ export function LaunchGame(props: ILaunchGameProps) {
             value={gameID}
             onChange={(e) => {
               setGameID(e.target.value);
+              setDidTouch(true);
+            }}
+          />
+        </div>
+
+        <div className="form-control">
+          <label className="justify-center label">
+            <span className="label-text">Admin code(optional)</span>
+          </label>
+          <input
+            type="text"
+            data-testid="launch-game-code"
+            className="w-full pr-16 input input-bordered"
+            value={adminCode}
+            onChange={(e) => {
+              setAdminCode(e.target.value);
               setDidTouch(true);
             }}
           />

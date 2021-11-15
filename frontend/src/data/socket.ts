@@ -21,6 +21,7 @@ export default function useGameSocket(userName: String, gameId: String) {
   const [story, setStory] = useState<Story>();
   const [statusCode, setStatusCode] = useState<String>();
   const [storyPointsSelected, setStoryPointsSelected] = useState(-3);
+  const [isAdmin, setIsAdmin] = useState(false);
   useEffect(() => {
     if (lastJsonMessage !== null) {
       const g = lastJsonMessage as Game;
@@ -29,8 +30,9 @@ export default function useGameSocket(userName: String, gameId: String) {
       setStory(s);
       const pe = s?.participantEstimations.find((p) => p.name === userName);
       setStoryPointsSelected(!pe ? -3 : pe?.storyPoints);
+      setIsAdmin(g.participants.find((p) => p.name === userName)?.isAdmin || false);
     }
   }, [lastJsonMessage, setGame, setStory, userName]);
   useEffect(() => setStatusCode(statusMap[readyState]), [readyState]);
-  return { sendJsonMessage, game, story, storyPointsSelected, statusCode };
+  return { sendJsonMessage, game, story, storyPointsSelected, statusCode, isAdmin };
 }

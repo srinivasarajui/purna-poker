@@ -14,6 +14,7 @@ export function CreateGame(props: ICreateGameProps) {
   const [isButtonDisabled, setButtonDisabled] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
   const [gameID, setGameID] = useState('');
+  const [adminCode, setAdminCode] = useState('');
   const [userName, setUserName] = useState('');
   const [name, setGameName] = useState('');
   const [votingSystemCode, setVotingSystem] = useState('fib');
@@ -21,6 +22,7 @@ export function CreateGame(props: ICreateGameProps) {
   useEffect(() => {
     if (data) {
       setGameID(data.newGame.idString.toString());
+      setAdminCode(data.newGame.adminCode.toString());
     }
   }, [data]);
   useEffect(() => {
@@ -32,7 +34,7 @@ export function CreateGame(props: ICreateGameProps) {
   }, [setButtonDisabled, userName, name, votingSystemCode]);
 
   const onNewClick = async () => {
-    newGame({ variables: { name: name.trim(), code: votingSystemCode } });
+    newGame({ variables: { name: name.trim(), code: votingSystemCode, participantName: userName } });
     setModalOpen(true);
   };
   const onModalAction = () => {
@@ -110,10 +112,13 @@ export function CreateGame(props: ICreateGameProps) {
         {gameID ? (
           <>
             <div>This is the code for game you created just now</div>
-
             <div>
-              Code: {gameID} <CopyToClipBoardButton text={gameID} />
+              Game Code: {gameID} <CopyToClipBoardButton text={gameID} />
             </div>
+            <div>
+              Admin Code: {adminCode} <CopyToClipBoardButton text={adminCode} />
+            </div>
+            <div>This code is needed if user has to be admin. You are also admin by default.</div>
             <div>Please save this for your use later</div>
           </>
         ) : (
