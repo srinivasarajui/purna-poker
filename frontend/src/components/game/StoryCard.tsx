@@ -33,7 +33,9 @@ const StoryCard = (props: IStoryCardProps) => {
   };
   return (
     <>
-      <div className="shadow-2xl card compact bg-base-100 ">
+      <div
+        className={'shadow-2xl card compact ' + (props.isActive ? ' bg-primary text-primary-content ' : 'bg-base-100')}
+      >
         <div className="card-body">
           <p data-testid="story-description">{props.story.description}</p>
 
