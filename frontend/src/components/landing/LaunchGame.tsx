@@ -4,14 +4,18 @@ import Alert from '../common/Alert';
 import { addParticipantMutation } from '../../data/gql';
 import { useRouter } from '../../data/routerUtil';
 
-export interface ILaunchGameProps {}
+export interface ILaunchGameProps {
+  isPreset?: boolean;
+  gameID?: string;
+  adminCode?: string;
+}
 
 export function LaunchGame(props: ILaunchGameProps) {
   const { goToGamePage } = useRouter();
   const [errorMessage, setErrorMessage] = useState<string[]>([]);
-  const [gameID, setGameID] = useState('');
+  const [gameID, setGameID] = useState(props.gameID || '');
   const [userName, setUserName] = useState('');
-  const [adminCode, setAdminCode] = useState('');
+  const [adminCode, setAdminCode] = useState(props.adminCode || '');
   const [isButtonDisabled, setButtonDisabled] = useState(true);
   const [touched, setDidTouch] = useState(false);
   const onGoClick = async () => {
@@ -35,7 +39,7 @@ export function LaunchGame(props: ILaunchGameProps) {
         if (userName.length === 0) {
           msg.push('User name can not be empty');
         }
-        if (gameID.match(/^[0-9a-fA-F]{24}$/)) {
+        if (!gameID.match(/^[0-9a-fA-F]{24}$/)) {
           msg.push('Game code do not seem to be valid');
         }
         setErrorMessage(msg);
@@ -70,6 +74,7 @@ export function LaunchGame(props: ILaunchGameProps) {
             type="text"
             data-testid="launch-game-code"
             className="w-full pr-16 input input-bordered"
+            disabled={props.isPreset}
             value={gameID}
             onChange={(e) => {
               setGameID(e.target.value);
@@ -86,6 +91,7 @@ export function LaunchGame(props: ILaunchGameProps) {
             type="text"
             data-testid="launch-game-code"
             className="w-full pr-16 input input-bordered"
+            disabled={props.isPreset}
             value={adminCode}
             onChange={(e) => {
               setAdminCode(e.target.value);

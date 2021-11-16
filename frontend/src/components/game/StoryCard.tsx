@@ -10,6 +10,7 @@ export interface IStoryCardProps {
   sendJsonMessage: SendJsonMessage;
   getDisplay: (id: number) => String | undefined;
   isActive: boolean;
+  isAdmin: boolean;
 }
 const StoryCard = (props: IStoryCardProps) => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -34,7 +35,9 @@ const StoryCard = (props: IStoryCardProps) => {
   return (
     <>
       <div
-        className={'shadow-2xl card compact ' + (props.isActive ? ' bg-primary text-primary-content ' : 'bg-base-100')}
+        className={
+          'shadow-2xl card compact ' + (props.isActive ? ' bg-primary text-primary-content ' : ' bg-base-100 ')
+        }
       >
         <div className="card-body">
           <p data-testid="story-description">{props.story.description}</p>
@@ -47,28 +50,30 @@ const StoryCard = (props: IStoryCardProps) => {
             </div>
 
             <div className="flex flex-grow" />
-            <div>
-              <button
-                data-testid="story-card-story-edit"
-                type="button"
-                onClick={() => {
-                  setModalOpen(true);
-                }}
-              >
-                <EditIcon />
-              </button>
-              {props.isActive || (
+            {props.isAdmin && (
+              <div>
                 <button
-                  data-testid="story-card-story-delete"
+                  data-testid="story-card-story-edit"
                   type="button"
                   onClick={() => {
-                    deleteAction();
+                    setModalOpen(true);
                   }}
                 >
-                  <DeleteIcon />
+                  <EditIcon />
                 </button>
-              )}
-            </div>
+                {props.isActive || (
+                  <button
+                    data-testid="story-card-story-delete"
+                    type="button"
+                    onClick={() => {
+                      deleteAction();
+                    }}
+                  >
+                    <DeleteIcon />
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

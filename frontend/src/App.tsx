@@ -1,9 +1,10 @@
-import { ApolloProvider } from '@apollo/client';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 
-import NavBar from './components/common/NavBar';
+import { ApolloProvider } from '@apollo/client';
 import GameDetails from './pages/GameDetails';
 import Landing from './pages/Landing';
+import { Load } from './pages/Load';
+import NavBar from './components/common/NavBar';
 import { clientGQL } from './data/gql';
 
 function App() {
@@ -14,6 +15,8 @@ function App() {
         <main className="flex-grow px-2 py-1 md:py-6 mg:px-6 ">
           <ApolloProvider client={clientGQL}>
             <Switch>
+              <Route path="/load/:gid/:adminCode" children={<Load />} />
+              <Route path="/load/:gid" children={<Load />} />
               <Route path="/game">
                 <GameDetails />
               </Route>

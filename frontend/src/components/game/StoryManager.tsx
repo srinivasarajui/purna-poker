@@ -54,6 +54,7 @@ export default function StoryManager(props: IStoryManagerProps) {
             stories={props.stories}
             sendJsonMessage={props.sendJsonMessage}
             currentStoryId={props.currentStoryId}
+            isAdmin={props.isAdmin}
           />
         </div>
         {props.isAdmin && <DownloadCsvButton stories={props.stories} />}

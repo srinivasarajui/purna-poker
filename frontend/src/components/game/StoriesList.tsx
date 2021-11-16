@@ -7,6 +7,7 @@ export interface IStoriesListProps {
   currentStoryId?: String;
   sendJsonMessage: SendJsonMessage;
   getDisplay: (id: number) => String | undefined;
+  isAdmin: boolean;
 }
 
 export function StoriesList(props: IStoriesListProps) {
@@ -19,6 +20,7 @@ export function StoriesList(props: IStoriesListProps) {
           story={story}
           isActive={story.id === props.currentStoryId}
           sendJsonMessage={props.sendJsonMessage}
+          isAdmin={props.isAdmin}
         />
       ))}
     </>

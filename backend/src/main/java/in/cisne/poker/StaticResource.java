@@ -13,4 +13,14 @@ public class StaticResource {
     rc.reroute("/index.html");
   }
 
+  @Route(path = "/load/:gid")
+  void loadStaticRoute1(RoutingContext rc) {
+    rc.reroute("/index.html");
+  }
+
+  @Route(path = "/load/:gid/:adminCode")
+  void loadStaticRoute2(RoutingContext rc) {
+    rc.reroute("/index.html");
+  }
+
 }
