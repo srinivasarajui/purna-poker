@@ -22,17 +22,23 @@ export default function useGameSocket(userName: String, gameId: String) {
   const [statusCode, setStatusCode] = useState<String>();
   const [storyPointsSelected, setStoryPointsSelected] = useState(-3);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isLast, setIsLast] = useState(true);
+  const [isFirst, setIsFirst] = useState(true);
   useEffect(() => {
     if (lastJsonMessage !== null) {
       const g = lastJsonMessage as Game;
       setGame(g);
-      const s = g.stories.find((s1) => s1.id === g.currentStoryId);
-      setStory(s);
-      const pe = s?.participantEstimations.find((p) => p.name === userName);
-      setStoryPointsSelected(!pe ? -3 : pe?.storyPoints);
+      const index = g.stories.findIndex((s1) => s1.id === g.currentStoryId);
+      if (index !== -1) {
+        setStory(g.stories[index]);
+        setIsLast(index === g.stories.length - 1);
+        setIsFirst(index === 0);
+        const pe = g.stories[index].participantEstimations.find((p) => p.name === userName);
+        setStoryPointsSelected(!pe ? -3 : pe?.storyPoints);
+      }
       setIsAdmin(g.participants.find((p) => p.name === userName)?.isAdmin || false);
     }
   }, [lastJsonMessage, setGame, setStory, userName]);
   useEffect(() => setStatusCode(statusMap[readyState]), [readyState]);
-  return { sendJsonMessage, game, story, storyPointsSelected, statusCode, isAdmin };
+  return { sendJsonMessage, game, story, storyPointsSelected, statusCode, isAdmin, isLast, isFirst };
 }

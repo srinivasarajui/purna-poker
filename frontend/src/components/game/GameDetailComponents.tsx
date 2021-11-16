@@ -14,7 +14,7 @@ export interface IGameDetailCompProps {
 }
 
 export function GameDetailComp(props: IGameDetailCompProps) {
-  const { sendJsonMessage, game, story, storyPointsSelected, statusCode, isAdmin } = useGameSocket(
+  const { sendJsonMessage, game, story, storyPointsSelected, statusCode, isAdmin, isLast, isFirst } = useGameSocket(
     props.userName,
     props.gameId
   );
@@ -40,6 +40,8 @@ export function GameDetailComp(props: IGameDetailCompProps) {
                       sendJsonMessage={sendJsonMessage}
                       id={story.id}
                       disableFlip={story.participantEstimations.length === 0}
+                      disableNext={isLast}
+                      disablePrevious={isFirst}
                     />
                   </div>
                 )}
@@ -82,6 +84,7 @@ export function GameDetailComp(props: IGameDetailCompProps) {
               stories={game.stories}
               sendJsonMessage={sendJsonMessage}
               isAdmin={isAdmin}
+              currentStoryId={story?.id}
             ></StoryManager>
           </div>
         </div>

@@ -46,7 +46,7 @@ export function LaunchGame(props: ILaunchGameProps) {
   return (
     <div className="flex-grow h-auto place-items-center">
       <div className="flex flex-col items-center justify-center space-y-4">
-        <div>Join a existing Game</div>
+        <div>Join an existing Game</div>
         <div className="form-control">
           <label className="justify-center label">
             <span className="label-text">Username</span>

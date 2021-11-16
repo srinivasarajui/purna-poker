@@ -8,6 +8,8 @@ export interface IGameActionsProps {
   sendJsonMessage: SendJsonMessage;
   id: String;
   disableFlip: boolean;
+  disableNext: boolean;
+  disablePrevious: boolean;
 }
 
 export function GameActions(props: IGameActionsProps) {
@@ -18,6 +20,7 @@ export function GameActions(props: IGameActionsProps) {
         <button
           type="button"
           data-testid="game-actions-previous-story"
+          disabled={props.disablePrevious}
           className={btnClassName}
           onClick={() => {
             props.sendJsonMessage({
@@ -31,6 +34,7 @@ export function GameActions(props: IGameActionsProps) {
         <button
           type="button"
           className={btnClassName}
+          disabled={props.disableNext}
           data-testid="game-actions-next-story"
           onClick={() => {
             props.sendJsonMessage({

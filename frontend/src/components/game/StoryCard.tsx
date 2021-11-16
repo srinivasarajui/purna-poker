@@ -9,6 +9,7 @@ export interface IStoryCardProps {
   story: Story;
   sendJsonMessage: SendJsonMessage;
   getDisplay: (id: number) => String | undefined;
+  isActive: boolean;
 }
 const StoryCard = (props: IStoryCardProps) => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -54,15 +55,17 @@ const StoryCard = (props: IStoryCardProps) => {
               >
                 <EditIcon />
               </button>
-              <button
-                data-testid="story-card-story-delete"
-                type="button"
-                onClick={() => {
-                  deleteAction();
-                }}
-              >
-                <DeleteIcon />
-              </button>
+              {props.isActive || (
+                <button
+                  data-testid="story-card-story-delete"
+                  type="button"
+                  onClick={() => {
+                    deleteAction();
+                  }}
+                >
+                  <DeleteIcon />
+                </button>
+              )}
             </div>
           </div>
         </div>
