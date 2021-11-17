@@ -1,7 +1,10 @@
+import { useContext, useEffect, useState } from 'react';
+
 import Alert from '../common/Alert';
 import { GameActions } from './GameActions';
 import { GameHeader } from './GameHeader';
 import { PointsDisplay } from './PointsDisplay';
+import { SocketContext } from '../../context/ScoketContext';
 import { StoryLevelPointsCard } from './StoryLevelPointsCard';
 import StoryManager from './StoryManager';
 import { StoryPointButtons } from './StoryPointButtons';
@@ -18,6 +21,10 @@ export function GameDetailComp(props: IGameDetailCompProps) {
     props.userName,
     props.gameId
   );
+  const { setStatusCode } = useContext(SocketContext);
+  useEffect(() => {
+    setStatusCode(statusCode || 'not connected');
+  }, [statusCode, setStatusCode]);
   const { loading, data, getDisplay } = useGetVotingSystem(props.gameId);
 
   if (game && !loading) {
@@ -71,11 +78,26 @@ export function GameDetailComp(props: IGameDetailCompProps) {
                 </div>
 
                 <div className="h-2/5">
-                  <PointsDisplay getDisplay={getDisplay} story={story} participants={game.participants} />
+                  <PointsDisplay
+                    getDisplay={getDisplay}
+                    story={story}
+                    participants={game.participants}
+                    didGameStart={game.didGameStart}
+                  />
                 </div>
               </>
             ) : (
-              <div className="text-lg font-bold">Game is yet to start</div>
+              <>
+                <div className="text-lg font-bold">Game is yet to start</div>
+                <div className="h-2/5">
+                  <PointsDisplay
+                    getDisplay={getDisplay}
+                    story={story}
+                    participants={game.participants}
+                    didGameStart={game.didGameStart}
+                  />
+                </div>
+              </>
             )}
           </div>
           <div className="h-full md:w-1/3">

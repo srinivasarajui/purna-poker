@@ -1,18 +1,19 @@
-import ClipboardIcon from '../../icons/ClipboardIcon';
+import toast from 'react-hot-toast';
 
 export interface ICopyToClipBoardButtonProps {
-  text: String;
-  showLabel?: boolean;
+  displayText: String;
+  copyText: String;
 }
 
-export default function CopyToClipBoardButton({ text, showLabel }: ICopyToClipBoardButtonProps) {
+export default function CopyToClipBoardButton(props: ICopyToClipBoardButtonProps) {
+  const notify = () => toast('Copied to clipboard');
   const copy = () => {
-    navigator.clipboard.writeText(text.toString());
+    navigator.clipboard.writeText(props.copyText.toString());
+    notify();
   };
   return (
-    <button type="button" className="btn-xs" onClick={() => copy()} data-testid="copytoclipboard">
-      <ClipboardIcon />
-      {showLabel ? 'Copy to clipboard' : ''}
+    <button type="button" className="btn btn-ghost" onClick={() => copy()} data-testid="copytoclipboard">
+      {props.displayText}
     </button>
   );
 }

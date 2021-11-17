@@ -4,23 +4,27 @@ export interface IPointsDisplayCardProps {
   storyPoints: number;
   didVote: boolean;
   didLogin: boolean;
+  didGameStart: boolean;
   getDisplay: (id: number) => String | undefined;
 }
 
 export function PointsDisplayCard(props: IPointsDisplayCardProps) {
   let displayText;
   let style = '';
-  if (!props.didLogin) {
-    displayText = 'Offline';
-  } else if (!props.didVote) {
-    displayText = 'Waiting';
-    style = 'animate-pulse';
-  } else if ((props.storyPoints >= 0 && props.isCardOpen) || props.storyPoints < 0) {
-    displayText = props.getDisplay(props.storyPoints);
+  if (props.didGameStart) {
+    if (!props.didLogin) {
+      displayText = 'Offline';
+    } else if (!props.didVote) {
+      displayText = 'Waiting';
+      style = 'animate-pulse';
+    } else if ((props.storyPoints >= 0 && props.isCardOpen) || props.storyPoints < 0) {
+      displayText = props.getDisplay(props.storyPoints);
+    } else {
+      displayText = 'Ready';
+    }
   } else {
-    displayText = 'Ready';
+    displayText = props.didLogin ? 'Online' : 'Offline';
   }
-
   return (
     <div className="shadow stats">
       <div className="stat place-items-center place-content-center">
