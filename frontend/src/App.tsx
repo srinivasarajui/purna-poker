@@ -5,7 +5,7 @@ import GameDetails from './pages/GameDetails';
 import Landing from './pages/Landing';
 import { Load } from './pages/Load';
 import NavBar from './components/common/NavBar';
-import { SocketContext } from './context/ScoketContext';
+import { SocketContext } from './context/SocketContext';
 import { Toaster } from 'react-hot-toast';
 import { clientGQL } from './data/gql';
 import { useState } from 'react';

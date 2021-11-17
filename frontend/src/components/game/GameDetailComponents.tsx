@@ -1,10 +1,10 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 
 import Alert from '../common/Alert';
 import { GameActions } from './GameActions';
 import { GameHeader } from './GameHeader';
 import { PointsDisplay } from './PointsDisplay';
-import { SocketContext } from '../../context/ScoketContext';
+import { SocketContext } from '../../context/SocketContext';
 import { StoryLevelPointsCard } from './StoryLevelPointsCard';
 import StoryManager from './StoryManager';
 import { StoryPointButtons } from './StoryPointButtons';

@@ -1,6 +1,6 @@
 import ExitIcon from '../../icons/ExitIcon';
 import { Link } from 'react-router-dom';
-import { SocketContext } from '../../context/ScoketContext';
+import { SocketContext } from '../../context/SocketContext';
 import { ThemeSwitch } from './ThemeSwitch';
 import { matchPath } from 'react-router';
 import { useContext } from 'react';

@@ -134,7 +134,6 @@ public class GameSocket {
     try {
       notifier.notify(game);
     } catch (Exception e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
   }
