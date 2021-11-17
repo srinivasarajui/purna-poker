@@ -67,17 +67,22 @@ public class GameSocket {
   public void onClose(Session session, @PathParam("gameId") String gameId, @PathParam("username") String userId) {
     String username = decodeValue(userId);
     if (notifier.removeSession(session)) {
+      updateParticipant(gameId, username);
       gameCache.remove(gameId);
     } else {
       if (!notifier.checkUser(gameId, username)) {
-        var game = gameCache.get(gameId);
-        game.updateParticipant(username, false);
-        save(game);
-        notify(game);
+        updateParticipant(gameId, username);
       }
 
     }
 
+  }
+
+  private void updateParticipant(String gameId, String username) {
+    var game = gameCache.get(gameId);
+    game.updateParticipant(username, false);
+    save(game);
+    notify(game);
   }
 
   @OnMessage
