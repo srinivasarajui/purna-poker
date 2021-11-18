@@ -24,6 +24,7 @@ public class GameQL {
   public Uni<Game> addParticipant(@Name("id") String gameId, String name, String adminCode) {
     Uni<Game> game = Game.findById(new ObjectId(gameId));
     return game.onItem().transformToUni(g -> {
+      System.out.println("admin: " + g.adminCode + ":" + adminCode);
       boolean isAdmin = adminCode.equals(g.adminCode);
       g.addParticipant(name, isAdmin);
       return g.persistOrUpdate();

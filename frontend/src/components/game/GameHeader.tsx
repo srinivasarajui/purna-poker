@@ -1,4 +1,3 @@
-import CopyToClipBoardButton from '../common/CopyToClipBoardButton';
 import EditIcon from '../../icons/EditIcon';
 import { Game } from '../../data/types';
 import PlayIcon from '../../icons/PlayIcon';
@@ -6,6 +5,7 @@ import { SendJsonMessage } from 'react-use-websocket/dist/lib/types';
 import StopIcon from '../../icons/StopIcon';
 import { TextInputPopup } from './TextInputPopup';
 import { useState } from 'react';
+import { CopyCodes } from '../common/CopyCode';
 
 export interface IGameHeaderProps {
   game: Game;
@@ -47,28 +47,9 @@ export function GameHeader(props: IGameHeaderProps) {
             </button>
           )}
         </div>
-        <div className="text-sm" data-testid="game-header-code">
-          Game code: {props.game.idString} <CopyToClipBoardButton text={props.game.idString} />
-        </div>
-        {props.isAdmin && (
-          <div className="text-sm" data-testid="game-header-code">
-            Admin code: {props.game.adminCode} <CopyToClipBoardButton text={props.game.adminCode} />
-          </div>
-        )}
       </div>
       <div className="flex flex-col gap-1">
-        <div className="px-4 mx-8 indicator place-items-center">
-          <div
-            id="game-header-status-indicator"
-            className={`indicator-item indicator-middle indicator-start badge ${
-              props.statusCode === 'Connected' ? 'badge-success' : 'badge-warning'
-            }`}
-          />
-          <div className="place-items-center" data-testid="game-header-status-text">
-            {props.statusCode}
-          </div>
-        </div>
-
+        <CopyCodes adminCode={props.game.adminCode} isAdmin={props.isAdmin} gameId={props.game.idString} />
         {props.isAdmin &&
           (props.game.didGameStart ? (
             <button

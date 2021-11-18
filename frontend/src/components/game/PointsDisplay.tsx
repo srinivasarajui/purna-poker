@@ -5,6 +5,7 @@ import { PointsDisplayCard } from './PointsDisplayCard';
 export interface IPointsDisplayProps {
   story?: Story;
   participants: Participant[];
+  didGameStart: boolean;
   getDisplay: (id: number) => String | undefined;
 }
 
@@ -21,6 +22,7 @@ export function PointsDisplay(props: IPointsDisplayProps) {
         {props.story &&
           props.story.participantEstimations.map((pe) => (
             <PointsDisplayCard
+              didGameStart={props.didGameStart}
               name={pe.name}
               getDisplay={props.getDisplay}
               key={pe.name.toString()}
@@ -32,6 +34,7 @@ export function PointsDisplay(props: IPointsDisplayProps) {
           ))}
         {unVotedUsers.map((user) => (
           <PointsDisplayCard
+            didGameStart={props.didGameStart}
             getDisplay={props.getDisplay}
             name={user.name}
             key={user.name.toString()}

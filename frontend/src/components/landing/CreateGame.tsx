@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useGetVotingSystems, useNewGameMutation } from '../../data/gql';
 
-import CopyToClipBoardButton from '../common/CopyToClipBoardButton';
+import { CopyCodes } from '../common/CopyCode';
 import Modal from '../common/Modal';
 import { useRouter } from '../../data/routerUtil';
 
@@ -112,14 +112,11 @@ export function CreateGame(props: ICreateGameProps) {
         {gameID ? (
           <>
             <div>This is the code for game you created just now</div>
-            <div>
-              Game Code: {gameID} <CopyToClipBoardButton text={gameID} />
-            </div>
-            <div>
-              Admin Code: {adminCode} <CopyToClipBoardButton text={adminCode} />
-            </div>
-            <div>This code is needed if user has to be admin. You are also admin by default.</div>
+            <div>Game Code: {gameID}</div>
+            <div>Admin Code: {adminCode}</div>
+
             <div>Please save this for your use later</div>
+            <CopyCodes isAdmin={true} gameId={gameID} adminCode={adminCode} />
           </>
         ) : (
           <div>Game is being Generated</div>
