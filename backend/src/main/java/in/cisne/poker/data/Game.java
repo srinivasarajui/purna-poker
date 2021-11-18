@@ -83,10 +83,10 @@ public class Game extends ReactivePanacheMongoEntity {
   public void addParticipant(String name, boolean isAdmin) {
 
     this.getParticipants().stream().filter(p -> name.equals(p.name)).findAny().ifPresentOrElse(p -> {
-      p.isAdmin = true;
+      p.isAdmin = isAdmin;
     }, () -> {
       Participant p = new Participant();
-      p.isAdmin = true;
+      p.isAdmin = isAdmin;
       p.name = name;
       this.getParticipants().add(p);
     });
