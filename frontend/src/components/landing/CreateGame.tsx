@@ -49,10 +49,13 @@ export function CreateGame(props: ICreateGameProps) {
         <div>
           <div className="form-control">
             <label className="justify-center label">
-              <span className="label-text">Username</span>
+              <span className="label-text" id="">
+                Username
+              </span>
             </label>
             <input
               type="text"
+              aria-labelledby="create-game-username"
               id="create-game-username"
               data-testid="create-game-username"
               className="input input-bordered"
@@ -64,12 +67,15 @@ export function CreateGame(props: ICreateGameProps) {
         <div>
           <div className="form-control">
             <label className="justify-center label">
-              <span className="label-text">Game Description</span>
+              <span className="label-text" id="create-game-name">
+                Game Description
+              </span>
             </label>
             <textarea
               data-testid="create-game-name"
               className="w-full pr-16 textarea textarea-bordered"
               value={name}
+              aria-labelledby="create-game-name"
               onChange={(e) => setGameName(e.target.value)}
             />
           </div>
@@ -83,6 +89,7 @@ export function CreateGame(props: ICreateGameProps) {
               className="w-full max-w-xs select select-bordered"
               onChange={(event) => setVotingSystem(event.target.value)}
               data-testid="create-game-voting-system"
+              aria-labelledby="launch-admin-code"
               value={votingSystemCode}
             >
               {loading ? (

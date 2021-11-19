@@ -12,7 +12,15 @@ export function ThemeSwitch(props: IThemeSwitchProps) {
   };
   return (
     <div className="flex items-center justify-center">
-      🌞<input type="checkbox" defaultChecked={isDark} onChange={handleCheckboxChange} className="toggle"></input>🌚
+      🌞
+      <input
+        type="checkbox"
+        defaultChecked={isDark}
+        onChange={handleCheckboxChange}
+        className="toggle"
+        aria-label="Switch between Light and dark modes"
+      ></input>
+      🌚
     </div>
   );
 }

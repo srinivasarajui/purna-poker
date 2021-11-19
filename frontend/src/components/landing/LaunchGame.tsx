@@ -53,12 +53,15 @@ export function LaunchGame(props: ILaunchGameProps) {
         <div>Join an existing Game</div>
         <div className="form-control">
           <label className="justify-center label">
-            <span className="label-text">Username</span>
+            <span className="label-text" id="launch-game-username">
+              Username
+            </span>
           </label>
           <input
             type="text"
             data-testid="launch-game-username"
             className="input input-bordered"
+            aria-labelledby="launch-game-username"
             value={userName}
             onChange={(e) => {
               setUserName(e.target.value);
@@ -68,10 +71,13 @@ export function LaunchGame(props: ILaunchGameProps) {
         </div>
         <div className="form-control">
           <label className="justify-center label">
-            <span className="label-text">Game code</span>
+            <span className="label-text" id="launch-game-code">
+              Game code
+            </span>
           </label>
           <input
             type="text"
+            aria-labelledby="launch-game-code"
             data-testid="launch-game-code"
             className="w-full pr-16 input input-bordered"
             disabled={props.isPreset}
@@ -85,11 +91,14 @@ export function LaunchGame(props: ILaunchGameProps) {
 
         <div className="form-control">
           <label className="justify-center label">
-            <span className="label-text">Admin code(optional)</span>
+            <span className="label-text" id="launch-admin-code">
+              Admin code(optional)
+            </span>
           </label>
           <input
             type="text"
-            data-testid="launch-game-code"
+            data-testid="launch-admin-code"
+            aria-labelledby="launch-admin-code"
             className="w-full pr-16 input input-bordered"
             disabled={props.isPreset}
             value={adminCode}
