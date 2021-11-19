@@ -10,7 +10,6 @@ import { CopyCodes } from '../common/CopyCode';
 export interface IGameHeaderProps {
   game: Game;
   userName: String;
-  statusCode: String;
   isAdmin: boolean;
   sendJsonMessage: SendJsonMessage;
 }

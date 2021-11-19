@@ -32,13 +32,7 @@ export function GameDetailComp(props: IGameDetailCompProps) {
       <div className="flex-grow h-full">
         <div className="flex flex-col md:flex-row md:h-full">
           <div className="flex flex-col gap-4 p-1 m-1 space-x-4 space-y-4 md:flex-col md:w-2/3">
-            <GameHeader
-              game={game}
-              sendJsonMessage={sendJsonMessage}
-              statusCode={statusCode || 'loading'}
-              userName={props.userName}
-              isAdmin={isAdmin}
-            />
+            <GameHeader game={game} sendJsonMessage={sendJsonMessage} userName={props.userName} isAdmin={isAdmin} />
             {game.didGameStart && story ? (
               <>
                 {isAdmin && (

@@ -39,7 +39,7 @@ function NavBar() {
         </div>
       </div>
       <div className="space-x-4 navbar-end">
-        <div className="badge badge-warning">Alpha Version</div>
+        <div className="hidden badge badge-warning sm:visible">Alpha Version</div>
         <ThemeSwitch />
         {isGamePage && (
           <div>
