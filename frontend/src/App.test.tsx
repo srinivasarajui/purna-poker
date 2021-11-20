@@ -9,7 +9,7 @@ import { MockedProvider } from '@apollo/client/testing';
 describe('GameDetails testing', () => {
   test('Basic check', async () => {
     render(<App />);
-    const element = screen.queryByText('Purna Poker');
+    const element = screen.queryByTestId('navbar-logo');
     expect(element).toBeInTheDocument();
   });
 });

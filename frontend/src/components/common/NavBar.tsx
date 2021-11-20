@@ -1,5 +1,6 @@
 import ExitIcon from '../../icons/ExitIcon';
 import { Link } from 'react-router-dom';
+import LogoIcon from '../../icons/LogoIcon';
 import { SocketContext } from '../../context/SocketContext';
 import { ThemeSwitch } from './ThemeSwitch';
 import { matchPath } from 'react-router';
@@ -17,9 +18,7 @@ function NavBar() {
   return (
     <div className="mb-2 shadow-lg navbar bg-neutral text-neutral-content">
       <div className="px-2 mx-2 navbar-start">
-        <span className="text-lg font-bold" data-testid="navbar-title">
-          Purna Poker
-        </span>
+        <LogoIcon></LogoIcon>
       </div>
       <div className="hidden px-2 mx-2 navbar-center lg:flex">
         <div className="flex items-stretch">
