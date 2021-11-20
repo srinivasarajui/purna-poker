@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+
 import { MemoryRouter } from 'react-router';
 import NavBar from './NavBar';
 
@@ -9,8 +10,8 @@ describe('NavBar testing', () => {
         <NavBar />
       </MemoryRouter>
     );
-    const sp = screen.getByTestId('navbar-title');
-    expect(sp.innerHTML).toBe('Purna Poker');
+    const element = screen.queryByTestId('navbar-logo');
+    expect(element).toBeInTheDocument();
     const sp1 = screen.queryByTestId('navbar-exit');
     expect(sp1).not.toBeInTheDocument();
   });

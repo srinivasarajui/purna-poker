@@ -10,6 +10,6 @@
   "settings": {
     "workbench.colorTheme": "Cobalt2",
     "java.configuration.updateBuildConfiguration": "interactive",
-    "cSpell.words": ["Bson", "Purna", "Quarkus", "Srini", "testid", "UNINSTANTIATED"]
+    "cSpell.words": ["Bson", "mfib", "Purna", "Quarkus", "Srini", "testid", "tshirt", "UNINSTANTIATED"]
   }
 }
