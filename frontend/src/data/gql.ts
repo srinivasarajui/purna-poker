@@ -13,18 +13,21 @@ export const clientGQL = new ApolloClient({
 
 interface GameResult {
   idString: String;
+  adminCode: String;
 }
 
 interface NewGameMutation {
   name: String;
   code: String;
+  participantName: String;
 }
 
 export const NEW_GAME = gql`
-  mutation ($name: String, $code: String) {
-    newGame(name: $name, code: $code) {
+  mutation ($name: String, $code: String, $participantName: String) {
+    newGame(name: $name, code: $code, participantName: $participantName) {
       idString
       name
+      adminCode
     }
   }
 `;
@@ -106,3 +109,23 @@ export const useGetVotingSystem = (id: String) => {
     data?.votingSystem.points.find((v) => v.storyPoints === id)?.displayText.toUpperCase();
   return { loading, data, getDisplay };
 };
+
+export const ADD_PARTICIPANT = gql`
+  mutation ($id: String, $name: String, $code: String) {
+    addParticipant(id: $id, name: $name, adminCode: $code) {
+      idString
+    }
+  }
+`;
+
+export async function addParticipantMutation(id: String, name: String, code: String): Promise<boolean> {
+  const result = await clientGQL.mutate({
+    mutation: ADD_PARTICIPANT,
+    variables: {
+      id: id,
+      name: name,
+      code: code,
+    },
+  });
+  return !!result.data.addParticipant;
+}

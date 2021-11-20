@@ -1,23 +1,27 @@
-import { SendJsonMessage } from 'react-use-websocket/dist/lib/types';
 import FlipIcon from '../../icons/FlipIcon';
 import NextIcon from '../../icons/NextIcon';
 import PreviousIcon from '../../icons/PreviousIcon';
 import ResetIcon from '../../icons/ResetIcon';
+import { SendJsonMessage } from 'react-use-websocket/dist/lib/types';
 
 export interface IGameActionsProps {
   sendJsonMessage: SendJsonMessage;
   id: String;
   disableFlip: boolean;
+  disableNext: boolean;
+  disablePrevious: boolean;
 }
 
 export function GameActions(props: IGameActionsProps) {
+  const btnClassName = 'btn btn-sm sm:btn-md md:btn-md lg:btn-lg';
   return (
-    <div className="flex items-center gap-4 flex-cols justify-items-center">
+    <div className="flex flex-col items-center gap-4 md:flex-row justify-items-center">
       <div className="btn-group">
         <button
           type="button"
           data-testid="game-actions-previous-story"
-          className="btn btn-xs sm:btn-sm md:btn-md"
+          disabled={props.disablePrevious}
+          className={btnClassName}
           onClick={() => {
             props.sendJsonMessage({
               code: 'moveToPreviousStory',
@@ -29,7 +33,8 @@ export function GameActions(props: IGameActionsProps) {
         </button>
         <button
           type="button"
-          className="btn btn-xs sm:btn-sm md:btn-md"
+          className={btnClassName}
+          disabled={props.disableNext}
           data-testid="game-actions-next-story"
           onClick={() => {
             props.sendJsonMessage({
@@ -44,7 +49,7 @@ export function GameActions(props: IGameActionsProps) {
       <div className="btn-group">
         <button
           type="button"
-          className="btn btn-xs sm:btn-sm md:btn-md"
+          className={btnClassName}
           data-testid="game-actions-flip"
           disabled={props.disableFlip}
           onClick={() => {
@@ -59,7 +64,7 @@ export function GameActions(props: IGameActionsProps) {
         </button>
         <button
           type="button"
-          className="btn btn-xs sm:btn-sm md:btn-md"
+          className={btnClassName}
           disabled={props.disableFlip}
           data-testid="game-actions-reset"
           onClick={() => {

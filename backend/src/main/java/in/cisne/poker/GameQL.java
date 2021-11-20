@@ -2,6 +2,8 @@ package in.cisne.poker;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.bson.types.ObjectId;
 import org.eclipse.microprofile.graphql.GraphQLApi;
 import org.eclipse.microprofile.graphql.Mutation;
@@ -15,9 +17,24 @@ import io.smallrye.mutiny.Uni;
 @GraphQLApi
 public class GameQL {
 
+  @Inject
+  GameCache gameCache;
+
   @Mutation
-  public Uni<Game> newGame(String name, String code) {
-    return Game.newGame(name, code);
+  public Uni<Game> newGame(String name, String code, String participantName) {
+    return Game.newGame(name, code, participantName);
+  }
+
+  @Mutation
+  public Uni<Game> addParticipant(@Name("id") String gameId, String name, String adminCode) {
+    Uni<Game> game = Game.findById(new ObjectId(gameId));
+    return game.onItem().transformToUni(g -> {
+      boolean isAdmin = adminCode.equals(g.adminCode);
+      System.out.println("admin: " + g.adminCode + ":" + adminCode + ":" + isAdmin);
+      g.addParticipant(name, isAdmin);
+      gameCache.set(g);
+      return g.persistOrUpdate();
+    });
   }
 
   @Query

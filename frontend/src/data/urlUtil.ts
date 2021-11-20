@@ -1,5 +1,6 @@
 let wsURL: string;
 let gqlURL: string;
+let loadBaseURL: string;
 
 function populateURLs() {
   let wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
@@ -10,6 +11,7 @@ function populateURLs() {
     wsURL = `${wsProtocol}//${window.location.host}/socket`;
     gqlURL = `${window.location.protocol}//${window.location.host}/graphql`;
   }
+  loadBaseURL = `${window.location.protocol}//${window.location.host}/load`;
 }
 
 export const getWsURL = () => {
@@ -24,4 +26,14 @@ export const getGqlURL = () => {
     populateURLs();
   }
   return gqlURL;
+};
+
+export const getLoadURL = (gameID: String, adminCode?: String) => {
+  if (!loadBaseURL) {
+    populateURLs();
+  }
+  if (adminCode) {
+    return `${loadBaseURL}/${gameID}/${adminCode}`;
+  }
+  return `${loadBaseURL}/${gameID}`;
 };

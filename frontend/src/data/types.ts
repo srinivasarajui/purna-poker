@@ -1,6 +1,7 @@
 export interface Participant {
   name: String;
   isConnected: boolean;
+  isAdmin: boolean;
 }
 export interface ParticipantEstimation {
   name: String;
@@ -18,6 +19,7 @@ export interface Game {
   idString: String;
   name: String;
   stories: Story[];
+  adminCode: String;
   participants: Participant[];
   didGameStart: boolean;
   controllerName: String;

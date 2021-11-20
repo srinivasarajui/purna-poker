@@ -1,21 +1,27 @@
 import { useEffect, useState } from 'react';
-import { isValidateGameID } from '../../data/gql';
-import { useRouter } from '../../data/routerUtil';
-import Alert from '../common/Alert';
 
-export interface ILaunchGameProps {}
+import Alert from '../common/Alert';
+import { addParticipantMutation } from '../../data/gql';
+import { useRouter } from '../../data/routerUtil';
+
+export interface ILaunchGameProps {
+  isPreset?: boolean;
+  gameID?: string;
+  adminCode?: string;
+}
 
 export function LaunchGame(props: ILaunchGameProps) {
   const { goToGamePage } = useRouter();
   const [errorMessage, setErrorMessage] = useState<string[]>([]);
-  const [gameID, setGameID] = useState('');
+  const [gameID, setGameID] = useState(props.gameID || '');
   const [userName, setUserName] = useState('');
+  const [adminCode, setAdminCode] = useState(props.adminCode || '');
   const [isButtonDisabled, setButtonDisabled] = useState(true);
   const [touched, setDidTouch] = useState(false);
   const onGoClick = async () => {
     setButtonDisabled(true);
     setErrorMessage(['GameID is being validated']);
-    const isValid = await isValidateGameID(gameID);
+    const isValid = await addParticipantMutation(gameID, userName, adminCode);
     if (isValid) {
       goToGamePage(gameID, userName);
     } else {
@@ -33,7 +39,7 @@ export function LaunchGame(props: ILaunchGameProps) {
         if (userName.length === 0) {
           msg.push('User name can not be empty');
         }
-        if (gameID.match(/^[0-9a-fA-F]{24}$/)) {
+        if (!gameID.match(/^[0-9a-fA-F]{24}$/)) {
           msg.push('Game code do not seem to be valid');
         }
         setErrorMessage(msg);
@@ -44,15 +50,18 @@ export function LaunchGame(props: ILaunchGameProps) {
   return (
     <div className="flex-grow h-auto place-items-center">
       <div className="flex flex-col items-center justify-center space-y-4">
-        <div>Join a existing Game</div>
+        <div>Join an existing Game</div>
         <div className="form-control">
           <label className="justify-center label">
-            <span className="label-text">Username</span>
+            <span className="label-text" id="launch-game-username">
+              Username
+            </span>
           </label>
           <input
             type="text"
             data-testid="launch-game-username"
             className="input input-bordered"
+            aria-labelledby="launch-game-username"
             value={userName}
             onChange={(e) => {
               setUserName(e.target.value);
@@ -62,15 +71,39 @@ export function LaunchGame(props: ILaunchGameProps) {
         </div>
         <div className="form-control">
           <label className="justify-center label">
-            <span className="label-text">Game code</span>
+            <span className="label-text" id="launch-game-code">
+              Game code
+            </span>
           </label>
           <input
             type="text"
+            aria-labelledby="launch-game-code"
             data-testid="launch-game-code"
             className="w-full pr-16 input input-bordered"
+            disabled={props.isPreset}
             value={gameID}
             onChange={(e) => {
               setGameID(e.target.value);
+              setDidTouch(true);
+            }}
+          />
+        </div>
+
+        <div className="form-control">
+          <label className="justify-center label">
+            <span className="label-text" id="launch-admin-code">
+              Admin code(optional)
+            </span>
+          </label>
+          <input
+            type="text"
+            data-testid="launch-admin-code"
+            aria-labelledby="launch-admin-code"
+            className="w-full pr-16 input input-bordered"
+            disabled={props.isPreset}
+            value={adminCode}
+            onChange={(e) => {
+              setAdminCode(e.target.value);
               setDidTouch(true);
             }}
           />

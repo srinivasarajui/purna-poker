@@ -8,6 +8,7 @@ export interface IStoryLevelPointsCardProps {
   storyPoints: number;
   sendJsonMessage: SendJsonMessage;
   getDisplay: (id: number) => String | undefined;
+  isAdmin: boolean;
   points: Points[];
 }
 
@@ -34,7 +35,7 @@ export function StoryLevelPointsCard(props: IStoryLevelPointsCardProps) {
           </div>
 
           <div className="stat-desc">
-            {showPoints ? (
+            {showPoints && props.isAdmin ? (
               <button
                 type="button"
                 className="link link-primary"
@@ -45,7 +46,7 @@ export function StoryLevelPointsCard(props: IStoryLevelPointsCardProps) {
                 Manual over Ride
               </button>
             ) : (
-              <p>To See the estimated value</p>
+              <p></p>
             )}
           </div>
         </div>

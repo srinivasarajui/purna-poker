@@ -10,6 +10,8 @@ export interface IStoryManagerProps {
   stories: Story[];
   sendJsonMessage: SendJsonMessage;
   getDisplay: (id: number) => String | undefined;
+  isAdmin: boolean;
+  currentStoryId?: String;
 }
 
 export default function StoryManager(props: IStoryManagerProps) {
@@ -28,22 +30,34 @@ export default function StoryManager(props: IStoryManagerProps) {
   return (
     <div>
       <div className="flex flex-col h-full gap-2 ">
-        <button
-          type="button"
-          className="btn"
-          data-testid="story-manager-add-stories"
-          onClick={() => {
-            setModalOpen(true);
-            setInitialText('');
-          }}
-        >
-          <AddIcon />
-          Add a new story
-        </button>
+        {props.isAdmin ? (
+          <>
+            <button
+              type="button"
+              className="btn"
+              data-testid="story-manager-add-stories"
+              onClick={() => {
+                setModalOpen(true);
+                setInitialText('');
+              }}
+            >
+              <AddIcon />
+              Add a new story
+            </button>
+          </>
+        ) : (
+          <div className="text-2xl font-bold">Stories</div>
+        )}
         <div className="flex flex-col flex-grow h-full max-h-full gap-2 overflow-y-auto">
-          <StoriesList getDisplay={props.getDisplay} stories={props.stories} sendJsonMessage={props.sendJsonMessage} />
+          <StoriesList
+            getDisplay={props.getDisplay}
+            stories={props.stories}
+            sendJsonMessage={props.sendJsonMessage}
+            currentStoryId={props.currentStoryId}
+            isAdmin={props.isAdmin}
+          />
         </div>
-        <DownloadCsvButton stories={props.stories} />
+        {props.isAdmin && <DownloadCsvButton stories={props.stories} />}
       </div>
       {isModalOpen && (
         <TextInputPopup
