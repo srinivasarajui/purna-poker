@@ -11,6 +11,7 @@ describe('PointsDisplayCard testing', () => {
   test('Validate Display when opened voted', async () => {
     render(
       <PointsDisplayCard
+        didGameStart={true}
         getDisplay={getDisplay}
         name="Sample"
         isCardOpen={true}
@@ -27,6 +28,7 @@ describe('PointsDisplayCard testing', () => {
   test('Validate Display when not opened voted', async () => {
     render(
       <PointsDisplayCard
+        didGameStart={true}
         getDisplay={getDisplay}
         name="Sample"
         isCardOpen={false}
@@ -41,6 +43,7 @@ describe('PointsDisplayCard testing', () => {
   test('Validate Display when  opened not voted', async () => {
     render(
       <PointsDisplayCard
+        didGameStart={true}
         getDisplay={getDisplay}
         name="Sample"
         isCardOpen={false}

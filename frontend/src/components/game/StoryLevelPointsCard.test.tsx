@@ -21,6 +21,7 @@ describe('StoryLevelPointsCard testing', () => {
     const mockDisplayFun = jest.fn((x) => 'FUN' + x);
     render(
       <StoryLevelPointsCard
+        isAdmin={true}
         getDisplay={mockDisplayFun}
         storyPoints={5}
         showPoints={true}
@@ -30,7 +31,7 @@ describe('StoryLevelPointsCard testing', () => {
     );
     const sp = screen.getByTestId('points-card-story-points');
     expect(sp.innerHTML).toBe('FUN5');
-    const button = screen.getByText('Manual over Ride');
+    const button = screen.getByText('Override');
     expect(button).toBeInTheDocument();
     button.click();
     fireEvent.change(screen.getByTestId('points-popup-select'), { target: { value: 3 } });
@@ -46,6 +47,7 @@ describe('StoryLevelPointsCard testing', () => {
     const mockDisplayFun = jest.fn((x) => 'FUN' + x);
     render(
       <StoryLevelPointsCard
+        isAdmin={true}
         getDisplay={mockDisplayFun}
         storyPoints={8}
         showPoints={true}
@@ -53,7 +55,7 @@ describe('StoryLevelPointsCard testing', () => {
         sendJsonMessage={mockCallback}
       />
     );
-    const button = screen.getByText('Manual over Ride');
+    const button = screen.getByText('Override');
     expect(button).toBeInTheDocument();
     button.click();
     //const option = screen.getByDisplayValue('5');
