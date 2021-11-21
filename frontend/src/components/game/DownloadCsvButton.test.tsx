@@ -27,4 +27,23 @@ describe('DownloadCsvButton testing', () => {
     expect(button).not.toBeDisabled();
     button.click();
   });
+  test('Check isEstimated', async () => {
+    render(
+      <DownloadCsvButton
+        stories={[
+          {
+            description: 'Sample Desc',
+            id: 'ID1',
+            isEstimated: true,
+            storyPoints: 5,
+            participantEstimations: [],
+            areCardsOpen: true,
+          },
+        ]}
+      />
+    );
+    const button = screen.getByRole('button') as HTMLButtonElement;
+    expect(button).not.toBeDisabled();
+    button.click();
+  });
 });

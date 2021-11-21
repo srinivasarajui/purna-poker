@@ -70,4 +70,35 @@ describe('PointsDisplayCard testing', () => {
     const points = screen.getByTestId('pointsdisplay-points');
     expect(points.innerHTML).toBe('Offline');
   });
+  test('Validate Display when not logged in', async () => {
+    render(
+      <PointsDisplayCard
+        didGameStart={true}
+        getDisplay={getDisplay}
+        name="Sample"
+        isCardOpen={false}
+        storyPoints={5}
+        didVote={true}
+        didLogin={false}
+      />
+    );
+    const points = screen.getByTestId('pointsdisplay-points');
+    expect(points.innerHTML).toBe('Offline');
+  });
+
+  test('Validate Display when offline', async () => {
+    render(
+      <PointsDisplayCard
+        didGameStart={true}
+        getDisplay={getDisplay}
+        name="Sample"
+        isCardOpen={false}
+        storyPoints={5}
+        didLogin={true}
+        didVote={false}
+      />
+    );
+    const points = screen.getByTestId('pointsdisplay-points');
+    expect(points.innerHTML).toBe('Waiting');
+  });
 });

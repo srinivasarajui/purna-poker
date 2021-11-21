@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 
 import { Game } from '../../data/types';
 import { GameHeader } from './GameHeader';
+import { act } from 'react-dom/test-utils';
 
 describe('GameHeader testing', () => {
   let game: Game;
@@ -10,7 +11,17 @@ describe('GameHeader testing', () => {
     game = {
       idString: 'id',
       name: 'name',
-      stories: [],
+      adminCode: 'code',
+      stories: [
+        {
+          description: 'description',
+          id: 'id',
+          isEstimated: true,
+          storyPoints: 1,
+          participantEstimations: [],
+          areCardsOpen: true,
+        },
+      ],
       participants: [],
       didGameStart: false,
       controllerName: '',
@@ -19,14 +30,18 @@ describe('GameHeader testing', () => {
     mockCallback = jest.fn((x) => x);
   });
   test('List statusCode connection', async () => {
-    render(<GameHeader game={game} sendJsonMessage={mockCallback} statusCode="Connected" userName="sample" />);
-    //const indicator = screen.getByTestId('game-header-status-indicator');
-    //expect(indicator.style).toContain('badge-success');
+    render(<GameHeader game={game} sendJsonMessage={mockCallback} userName="sample" isAdmin={true} />);
+    const btn = screen.getByTestId('game-header-start');
+    expect(btn).toHaveTextContent('Start the Game');
+    act(() => btn.click());
+    expect(mockCallback).toHaveBeenCalledWith({ code: 'startGame', text: 'sample' });
   });
   test('List statusCode not connection', async () => {
     game.didGameStart = true;
-    render(<GameHeader game={game} sendJsonMessage={mockCallback} statusCode="Not Connected" userName="sample" />);
-    //const indicator = screen.getByTestId('game-header-status-indicator');
-    //expect(indicator.style).toContain('badge-success');
+    render(<GameHeader game={game} sendJsonMessage={mockCallback} userName="sample" isAdmin={true} />);
+    const btn = screen.getByTestId('game-header-stop');
+    expect(btn).toHaveTextContent('Stop the Game');
+    act(() => btn.click());
+    expect(mockCallback).toHaveBeenCalledWith({ code: 'stopGame'});
   });
 });
