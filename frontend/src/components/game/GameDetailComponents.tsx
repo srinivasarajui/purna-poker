@@ -41,6 +41,7 @@ export function GameDetailComp(props: IGameDetailCompProps) {
                       sendJsonMessage={sendJsonMessage}
                       id={story.id}
                       disableFlip={story.participantEstimations.length === 0}
+                      disableReset={story.participantEstimations.length === 0}
                       disableNext={isLast}
                       disablePrevious={isFirst}
                     />
