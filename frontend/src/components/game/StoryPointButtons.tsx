@@ -35,7 +35,6 @@ export function StoryPointButtons(props: IStoryPointButtonsProps) {
           </button>
         ))}
       </div>
-      {!props.canVote && <div className="text-center">Cards are open</div>}
     </div>
   );
 }
