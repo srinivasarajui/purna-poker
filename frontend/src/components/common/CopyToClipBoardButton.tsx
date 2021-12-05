@@ -12,7 +12,7 @@ export default function CopyToClipBoardButton(props: ICopyToClipBoardButtonProps
     notify();
   };
   return (
-    <button type="button" className="btn btn-ghost" onClick={() => copy()} data-testid="copytoclipboard">
+    <button type="button" className="btn btn-ghost" onClick={() => copy()} data-testid="copyToClipboard">
       {props.displayText}
     </button>
   );

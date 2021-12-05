@@ -1,3 +1,5 @@
+import ReactCardFlip from './ReactCardFlip';
+
 export interface IPointsDisplayCardProps {
   name: String;
   isCardOpen?: boolean;
@@ -14,27 +16,38 @@ export function PointsDisplayCard(props: IPointsDisplayCardProps) {
   if (props.didGameStart) {
     if (!props.didLogin) {
       displayText = 'Offline';
-    } else if (!props.didVote) {
-      displayText = 'Waiting';
-      style = 'animate-pulse';
-    } else if ((props.storyPoints >= 0 && props.isCardOpen) || props.storyPoints < 0) {
-      displayText = props.getDisplay(props.storyPoints);
     } else {
-      displayText = 'Ready';
+      if (!props.didVote) {
+        displayText = 'Waiting';
+      } else {
+        displayText = 'Ready';
+      }
     }
   } else {
     displayText = props.didLogin ? 'Online' : 'Offline';
   }
   return (
-    <div className="shadow stats">
-      <div className="stat place-items-center place-content-center">
-        <div className="stat-title" data-testid="pointsdisplay-name">
-          {props.name}
-        </div>
-        <div className={'stat-value ' + style} data-testid="pointsdisplay-points">
-          {displayText}
+    <ReactCardFlip isFlipped={!props.isCardOpen}>
+      <div className="w-full shadow stats">
+        <div className="stat place-items-center place-content-center">
+          <div className="stat-title" data-testid="pointsdisplay-name">
+            {props.name}
+          </div>
+          <div className={'stat-value ' + style} data-testid="pointsdisplay-points">
+            {props.getDisplay(props.storyPoints) || 'Not voted'}
+          </div>
         </div>
       </div>
-    </div>
+      <div className="w-full shadow stats">
+        <div className="stat place-items-center place-content-center">
+          <div className="stat-title" data-testid="pointsdisplay-name">
+            {props.name}
+          </div>
+          <div className={'stat-value ' + style} data-testid="pointsdisplay-points">
+            {displayText}
+          </div>
+        </div>
+      </div>
+    </ReactCardFlip>
   );
 }

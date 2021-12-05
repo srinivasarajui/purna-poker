@@ -11,7 +11,7 @@ describe('GameActions testing', () => {
   ].map((item) =>
     test('GameActions previous story check', async () => {
       const mockCallback = jest.fn((x) => x);
-      render(<GameActions id="Sample" sendJsonMessage={mockCallback} disableFlip={false} />);
+      render(<GameActions id="Sample" sendJsonMessage={mockCallback} disableFlip={false} disableReset={false} />);
       const sp = screen.getByTestId(item.buttonId);
       sp.click();
       expect(mockCallback.mock.calls.length).toBe(1);

@@ -1,3 +1,4 @@
+import { CopyCodes } from '../common/CopyCode';
 import EditIcon from '../../icons/EditIcon';
 import { Game } from '../../data/types';
 import PlayIcon from '../../icons/PlayIcon';
@@ -5,7 +6,6 @@ import { SendJsonMessage } from 'react-use-websocket/dist/lib/types';
 import StopIcon from '../../icons/StopIcon';
 import { TextInputPopup } from './TextInputPopup';
 import { useState } from 'react';
-import { CopyCodes } from '../common/CopyCode';
 
 export interface IGameHeaderProps {
   game: Game;
@@ -55,6 +55,7 @@ export function GameHeader(props: IGameHeaderProps) {
               type="button"
               className="btn"
               disabled={props.game.stories.length === 0}
+              data-testid="game-header-stop"
               onClick={() => {
                 props.sendJsonMessage({
                   code: 'stopGame',
@@ -62,13 +63,14 @@ export function GameHeader(props: IGameHeaderProps) {
               }}
             >
               <StopIcon />
-              stop the Game
+              Stop the Game
             </button>
           ) : (
             <button
               type="button"
               className="btn"
               disabled={props.game.stories.length === 0}
+              data-testid="game-header-start"
               onClick={() => {
                 props.sendJsonMessage({
                   code: 'startGame',

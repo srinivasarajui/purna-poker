@@ -41,6 +41,7 @@ export function GameDetailComp(props: IGameDetailCompProps) {
                       sendJsonMessage={sendJsonMessage}
                       id={story.id}
                       disableFlip={story.participantEstimations.length === 0}
+                      disableReset={story.participantEstimations.length === 0}
                       disableNext={isLast}
                       disablePrevious={isFirst}
                     />
@@ -59,6 +60,7 @@ export function GameDetailComp(props: IGameDetailCompProps) {
                 </div>
                 <div className="flex flex-col items-center justify-items-center">
                   <StoryPointButtons
+                    canVote={!story.areCardsOpen}
                     currentPoints={storyPointsSelected}
                     points={data?.votingSystem.points ? data?.votingSystem.points : []}
                     buttonClicked={(value: number) => {

@@ -20,7 +20,9 @@ describe('StoryCard testing', () => {
       participantEstimations: [],
     };
 
-    render(<StoryCard story={story} sendJsonMessage={() => false} getDisplay={getDisplay} />);
+    render(
+      <StoryCard isActive={true} isAdmin={true} story={story} sendJsonMessage={() => false} getDisplay={getDisplay} />
+    );
     const desc = screen.getByTestId('story-description');
     expect(desc).toBeInTheDocument();
     expect(desc.innerHTML).toEqual('Sample Desc');
@@ -37,7 +39,9 @@ describe('StoryCard testing', () => {
       areCardsOpen: true,
       participantEstimations: [],
     };
-    render(<StoryCard story={story} sendJsonMessage={() => false} getDisplay={getDisplay} />);
+    render(
+      <StoryCard isActive={true} isAdmin={true} story={story} sendJsonMessage={() => false} getDisplay={getDisplay} />
+    );
     const sp = screen.getByTestId('story-points');
     expect(sp).toBeInTheDocument();
     expect(sp.innerHTML).toEqual('Not Estimated yet');
@@ -53,7 +57,9 @@ describe('StoryCard testing', () => {
       participantEstimations: [],
     };
     const mockCallback = jest.fn((x) => x);
-    render(<StoryCard story={story} sendJsonMessage={mockCallback} />);
+    render(
+      <StoryCard story={story} sendJsonMessage={mockCallback} isActive={false} isAdmin={true} getDisplay={getDisplay} />
+    );
     const button = screen.getByTestId('story-card-story-delete');
     button.click();
     expect(mockCallback.mock.calls.length).toBe(1);
@@ -70,7 +76,9 @@ describe('StoryCard testing', () => {
       participantEstimations: [],
     };
     const mockCallback = jest.fn((x) => x);
-    render(<StoryCard story={story} sendJsonMessage={mockCallback} />);
+    render(
+      <StoryCard isActive={true} isAdmin={true} getDisplay={getDisplay} story={story} sendJsonMessage={mockCallback} />
+    );
     const button = screen.getByTestId('story-card-story-edit');
     button.click();
     const textarea = screen.getByTestId('input-popup-textarea');
@@ -92,7 +100,9 @@ describe('StoryCard testing', () => {
       areCardsOpen: true,
     };
     const mockCallback = jest.fn((x) => x);
-    render(<StoryCard story={story} sendJsonMessage={mockCallback} />);
+    render(
+      <StoryCard getDisplay={getDisplay} isActive={true} isAdmin={true} story={story} sendJsonMessage={mockCallback} />
+    );
     const button = screen.getByTestId('story-card-story-edit');
     button.click();
     const closeButton = screen.getByTestId('modal-close');

@@ -18,10 +18,10 @@ describe('Story Point Buttons testing', () => {
   ];
   test('Validate Test', async () => {
     const mockCallback = jest.fn((x) => x);
-    render(<StoryPointButtons currentPoints={8} buttonClicked={mockCallback} points={fib} />);
+    render(<StoryPointButtons canVote={true} currentPoints={8} buttonClicked={mockCallback} points={fib} />);
     const buttons = screen.getAllByRole('button');
     expect(buttons.length).toBe(10);
-    const button = screen.getByTestId('storypointbuttons-1');
+    const button = screen.getByTestId('story-point-buttons-1');
     button.click();
     expect(mockCallback.mock.calls.length).toBe(1);
     expect(mockCallback.mock.calls[0][0]).toBe(1);

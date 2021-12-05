@@ -3,9 +3,22 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import StoryManager from './StoryManager';
 
 describe('StoryManager testing', () => {
+  let getDisplay: (id: number) => String | undefined;
+
+  beforeEach(() => {
+    getDisplay = jest.fn((x) => x.toString());
+  });
+
   test('checking add success', async () => {
     const mockCallback = jest.fn((x) => x);
-    render(<StoryManager stories={[]} sendJsonMessage={mockCallback} />);
+    render(
+      <StoryManager
+        getDisplay={(id: number) => id.toString()}
+        isAdmin={true}
+        stories={[]}
+        sendJsonMessage={mockCallback}
+      />
+    );
     const button = screen.getByTestId('story-manager-add-stories') as HTMLButtonElement;
     button.click();
     const textarea = screen.getByTestId('input-popup-textarea') as HTMLTextAreaElement;
@@ -18,7 +31,7 @@ describe('StoryManager testing', () => {
   });
   test('checking add cancel', async () => {
     const mockCallback = jest.fn((x) => x);
-    render(<StoryManager stories={[]} sendJsonMessage={mockCallback} />);
+    render(<StoryManager isAdmin={true} getDisplay={getDisplay} stories={[]} sendJsonMessage={mockCallback} />);
     const button = screen.getByTestId('story-manager-add-stories') as HTMLButtonElement;
     button.click();
     const textarea = screen.getByTestId('input-popup-textarea') as HTMLTextAreaElement;

@@ -43,7 +43,7 @@ export function StoryLevelPointsCard(props: IStoryLevelPointsCardProps) {
                   setModalOpen(true);
                 }}
               >
-                Manual over Ride
+                Override
               </button>
             ) : (
               <p></p>

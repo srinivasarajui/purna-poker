@@ -8,6 +8,7 @@ export interface IGameActionsProps {
   sendJsonMessage: SendJsonMessage;
   id: String;
   disableFlip: boolean;
+  disableReset: boolean;
   disableNext: boolean;
   disablePrevious: boolean;
 }
@@ -65,7 +66,7 @@ export function GameActions(props: IGameActionsProps) {
         <button
           type="button"
           className={btnClassName}
-          disabled={props.disableFlip}
+          disabled={props.disableReset}
           data-testid="game-actions-reset"
           onClick={() => {
             props.sendJsonMessage({
