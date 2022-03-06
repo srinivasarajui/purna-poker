@@ -8,7 +8,7 @@
     "start": "concurrently \"wsrun --parallel start\""
   },
   "workspaces": [
-    "packages/*"
+    "apps/*"
   ],
   "devDependencies": {
     "concurrently": "^5.2.0",
