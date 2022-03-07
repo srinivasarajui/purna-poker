@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { trpc } from './utils/trpc';
+
 import {
   Text,
   Link,
@@ -23,10 +26,20 @@ import { LandingPage } from "./pages/LandingPage";
 import { GamePage } from "./pages/GamePage";
 
 export default function Main() {
+  const [queryClient] = useState(() => new QueryClient());
+  const [trpcClient] = useState(() =>
+    trpc.createClient({
+      url: 'http://192.168.0.111:3000/api',
+    }),
+  );
   return (
+    <trpc.Provider client={trpcClient} queryClient={queryClient}>
+      <QueryClientProvider client={queryClient}>
     <NativeBaseProvider theme={theme}>
       <Body />
     </NativeBaseProvider>
+      </QueryClientProvider>
+    </trpc.Provider>
   );
 }
 
@@ -41,7 +54,7 @@ function Body(){
         flex={1}
         width="100%"
       >
-        <GamePage />
+        <LandingPage />
       </Center>
     </VStack>
   )

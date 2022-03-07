@@ -14,11 +14,10 @@ const appRouter = createRouter()
   .merge('votingSystems.', VotingSystemsRouter);
 
 export type AppRouter = typeof appRouter;
-const runApp = async () => {
-  const app = express();
-  app.use(actuator());
-  app.use(apiEndpoint, createExpressMiddleware({router: appRouter}))
-  app.use(cors);
-  app.listen(PORT, () => { console.log(`listening at ${PORT} port`)})
-}
-runApp();
+
+const app = express();
+app.use(cors());
+app.use(actuator());
+app.use(apiEndpoint, createExpressMiddleware({router: appRouter}))
+app.get('/hi',(req,res)=> {console.log("IN");res.json({"Hu":"Hello"})});
+app.listen(PORT, () => { console.log(`listening at ${PORT} port`)})

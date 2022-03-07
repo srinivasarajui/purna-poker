@@ -1,6 +1,7 @@
 import { createRouter, prisma } from "./common";
 
 async function GetVotingSystems() {
+    console.log('GetVotingSystems');
     const votingSystems = await prisma.votingSystem.findMany();
     return votingSystems;
 }

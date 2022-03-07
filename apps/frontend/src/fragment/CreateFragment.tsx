@@ -1,8 +1,14 @@
 import { Box, Heading, VStack, FormControl, Input, Button, Center, HStack, Select, CheckIcon, TextArea, WarningOutlineIcon, useColorModeValue } from "native-base";
-
-import React from "react";
+import { trpc } from '../utils/trpc';
+import React, { useEffect } from "react";
 
 export function CreateFragment() {
+  const votingSystems = trpc.useQuery(['votingSystems.list']);
+  useEffect(()=>{
+    if (votingSystems?.data){
+      console.log(votingSystems.data.length)
+    }
+  }, [votingSystems])
   return (<Center w="100%">
     <Box  p="2" w="90%" py="8">
       <Heading size="lg" fontWeight="semibold">
