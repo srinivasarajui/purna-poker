@@ -1,5 +1,4 @@
 import { Box, Heading, VStack, FormControl, Input, Button, Center, HStack, Text } from "native-base";
-import { MaterialIcons } from '@expo/vector-icons';
 
 import React from "react";
 

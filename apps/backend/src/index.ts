@@ -5,6 +5,7 @@ import cors from "cors";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { createRouter } from "./common";
 import express from "express";
+import { VotingSystem } from "@prisma/client";
 
 const PORT = process.env.PORT || 3000;
 const apiEndpoint = '/api';
@@ -14,7 +15,7 @@ const appRouter = createRouter()
   .merge('votingSystems.', VotingSystemsRouter);
 
 export type AppRouter = typeof appRouter;
-
+export type VotingSystemType = VotingSystem;
 const app = express();
 app.use(cors());
 app.use(actuator());

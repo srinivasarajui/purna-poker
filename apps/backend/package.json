@@ -6,6 +6,10 @@
   "scripts": {
     "start": "ts-node-dev src/index.ts",
     "generate": "prisma generate"
+
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   },
   "main": "src/index.ts",
   "dependencies": {
