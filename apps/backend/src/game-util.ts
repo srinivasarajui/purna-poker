@@ -1,7 +1,10 @@
 import { Game, Story, Participant } from "@prisma/client";
 import { nanoid } from 'nanoid'
+import { EmitGameChange, gameCache } from "./common";
 import { roundupPoints } from "./voting-system";
+
 const DEFAULT_STORY_POINTS = -3
+
 export function addStory(game: Game, description:string) {
   const story:Story  = {
     id: nanoid(),
@@ -17,6 +20,7 @@ export function addStory(game: Game, description:string) {
 export function removeStory(game: Game, storyId: string) {
   game.stories = game.stories.filter(item=> item.id!==storyId);
 }
+
 function getStoryById(game: Game, storyId: string){
   const story = game.stories.find(item => item.id === storyId);
   if (!story) {
@@ -24,6 +28,7 @@ function getStoryById(game: Game, storyId: string){
   }
   return story
 }
+
 export function updateStoryDesc(game: Game, storyId: string, description:string) {
   const story = getStoryById(game, storyId);
   story.description=description
@@ -44,9 +49,7 @@ export function manageParticipant(game: Game, name: string,isConnected: boolean,
       name:name
     };
     game.participants.push(participant);
-
   }
-
 }
 
 export function startGame(game:Game) {
@@ -92,7 +95,6 @@ export async function flipPoints(game: Game) {
   }
 }
 
-
 export function setEstimation(game: Game, name: string, storyPoints:number) {
   const story = getStoryById(game, game.currentStoryId);
   const pe = story.participantEstimations.find( e => e.name === name);
@@ -104,4 +106,14 @@ export function setEstimation(game: Game, name: string, storyPoints:number) {
     }
     story.participantEstimations.push(pe);
   }
+}
+
+export async function processGameUpdate(gameId:string,action:(game:Game)=>void){
+  const game = await gameCache.get(gameId);
+  if (!game) {
+    return
+  }
+  action(game);
+  await gameCache.update(game);
+  EmitGameChange(game);
 }
