@@ -17,7 +17,7 @@ async function CreateGame({ input }: { input: CreateGameInputType }) {
     "name": input.name,
     "adminCode": input.adminCode,
     "didGameStart": false,
-    "currentStoryId": null,
+    "currentStoryId": '',
     "participants": [],
     "stories": [],
     "votingSystemId": input.votingSystemId
