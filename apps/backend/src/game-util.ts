@@ -1,6 +1,7 @@
 import { Game, Story, Participant } from "@prisma/client";
 import { nanoid } from 'nanoid'
-import { EmitGameChange, gameCache } from "./common";
+import { EmitGameChange } from "./common";
+import { gameCache } from "./game-cache";
 import { roundupPoints } from "./voting-system";
 
 const DEFAULT_STORY_POINTS = -3

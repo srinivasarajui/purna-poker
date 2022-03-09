@@ -4,6 +4,7 @@ import { Game } from "@prisma/client";
 
 export class GameCache{
   private cache: Map<string, Game> = new Map<string, Game>();
+  constructor(){}
     public async get(id:string): Promise<Game> {
       const hasKey = this.cache.has(id);
       if(!hasKey){
@@ -23,3 +24,6 @@ export class GameCache{
     this.cache.delete(id);
   }
 }
+
+
+export const gameCache = new GameCache();

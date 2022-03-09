@@ -4,3 +4,7 @@ import type { AppRouter } from '../../../backend/src/index'
 
 export const trpc = createReactQueryHooks<AppRouter>();
 // => { useQuery: ..., useMutation: ...}
+
+export const useVotingSystems = () =>{
+
+}

@@ -1,9 +1,10 @@
 import { CreateGame as CreateGameDAL } from "./game-dal";
-import {  GetEventCode, createRouter, gameChangeEmitter, gameCache } from "./common";
+import {  GetEventCode, createRouter, gameChangeEmitter } from "./common";
 import type {Game} from "@prisma/client";
 import { Subscription } from "@trpc/server";
 import { z } from "zod";
 import { addStory, flipPoints, manageParticipant, moveToNextStory, moveToPreviousStory, processGameUpdate, removeStory, resetPoints, setEstimation, startGame, updateStoryDesc, updateStoryPoints } from "./game-util";
+import { gameCache } from "./game-cache";
 
 const CreateGameInput = z.object({
   name: z.string(),

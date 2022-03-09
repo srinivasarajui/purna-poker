@@ -13,7 +13,7 @@ export function AppBar(props: IAppBarProps) {
     <StatusBar />
     <Box safeAreaTop bg={barBgColor} />
     <HStack bg={barBgColor} px="1" py="3" justifyContent="space-between" alignItems="center" w="100%" >
-      <Text color={barTxtColor} fontSize="20" fontWeight="bold">
+      <Text color={barTxtColor} fontSize="20" fontWeight="bold" testID="displayed-title">
         {props.title}
       </Text>
       <HStack alignItems="center">
