@@ -1,7 +1,8 @@
-import { Box, HStack, StatusBar, Text } from "native-base";
+import { Box, Center, Heading, HStack, StatusBar, Text, VStack } from "native-base";
 import React from "react";
 import { ToggleDarkMode } from "./ToggleDarkMode";
 import { useThemeConfig } from "../theme";
+import LogoIcon from "./svg/LogoIcon";
 export interface IAppBarProps {
   title: string
   menu?: JSX.Element;
@@ -13,9 +14,19 @@ export function AppBar(props: IAppBarProps) {
     <StatusBar />
     <Box safeAreaTop bg={barBgColor} />
     <HStack bg={barBgColor} px="1" py="3" justifyContent="space-between" alignItems="center" w="100%" >
-      <Text color={barTxtColor} fontSize="20" fontWeight="bold" testID="displayed-title">
-        {props.title}
-      </Text>
+    <HStack>
+      <HStack>
+      <LogoIcon  />
+      <Center >
+      <VStack alignItems="center"    >
+
+      <Text bold fontSize="lg">PURNA</Text>
+      <Text fontSize="xs">SCRUM POKER</Text>
+
+      </VStack>
+      </Center>
+      </HStack>
+      </HStack>
       <HStack alignItems="center">
         <ToggleDarkMode />
         {
