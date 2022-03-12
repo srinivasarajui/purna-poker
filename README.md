@@ -18,7 +18,7 @@ This is what [wikipedia](https://en.wikipedia.org/wiki/Planning_poker) Says
 It is deployed at https://purna-scrum-poker.herokuapp.com/
 
 ## Tech Stack
-
+//TODOs
 **Client:** React, TailwindCSS, daisyui
 
 **Server:** Java, quarkus, mongodb, websockets, graphql
