@@ -1,15 +1,70 @@
 import { Box, Heading, VStack, FormControl, Input, Button, Center, HStack, Select, CheckIcon, TextArea, WarningOutlineIcon, useColorModeValue } from "native-base";
 import { trpc } from '../utils/trpc';
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Game } from "backend";
+import {GameDetailsPopup} from '../components/GameDetailsPopup';
+
+enum CreateGameActions {
+  CHANGE_USER_NAME = 'changeUserName',
+  CHANGE_GAME_NAME = 'changeGameName',
+  CHANGE_VOITING_SYSTEM = 'changeVoitingSystem',
+
+}
+interface CreateGameAction {
+  type: CreateGameActions;
+  payload: string;
+}
+
+interface CreateGameState {
+  userName: string;
+  gameName: string;
+  voitingSystem: string;
+  isButtonDisabled: boolean;
+}
+
+
+// Our reducer function that uses a switch statement to handle our actions
+function CreateGameReducer(state: CreateGameState, action: CreateGameAction) {
+  const { type, payload } = action;
+  const nextState: CreateGameState = { ...state };
+  switch (type) {
+    case CreateGameActions.CHANGE_USER_NAME:
+      nextState.userName = payload;
+      break;
+    case CreateGameActions.CHANGE_GAME_NAME:
+      nextState.gameName = payload;
+      break
+    case CreateGameActions.CHANGE_VOITING_SYSTEM:
+     nextState.voitingSystem = payload;
+  }
+  nextState.isButtonDisabled =  !(nextState.userName.trim().length > 0 && nextState.gameName.trim().length > 0 && nextState.voitingSystem.length > 0);
+  return nextState;
+}
 
 export function CreateFragment() {
+  const [showModal, setShowModal] = useState(false);
+  const [game, setGame] = useState<Game>();
   const votingSystems = trpc.useQuery(['votingSystems.list']);
-  useEffect(()=>{
-    if (votingSystems?.data){
-      console.log(votingSystems.data.length)
-    }
-  }, [votingSystems])
+  const mutation = trpc.useMutation('game.createGame',{
+    async onSuccess(data:Game) {
+      console.log('create game success', data);
+      setGame(data);
+      setShowModal(true);
+    },
+  });
+  const [state, dispatch] = React.useReducer(CreateGameReducer, {
+    userName: '',
+    gameName: '',
+    voitingSystem: '',
+    isButtonDisabled: true,
+  });
+  const handleCreateGame = async () => {
+    mutation.mutate({ name: state.gameName, votingSystemId: state.voitingSystem,
+      userName: state.userName });
+  };
   return (<Center w="100%">
+
+    <GameDetailsPopup showModal={showModal} game={game} closeModel={() => setShowModal(false)} />
     <Box  p="2" w="90%" py="8">
       <Heading size="lg" fontWeight="semibold">
         Create a new game
@@ -17,13 +72,30 @@ export function CreateFragment() {
       <VStack space={3} mt="5">
         <FormControl>
           <FormControl.Label >User name</FormControl.Label>
-          <Input variant="outline" />
+          <Input variant="outline" value={state.userName} onChangeText={itemValue => dispatch({type: CreateGameActions.CHANGE_USER_NAME,  payload:itemValue })}  />
         </FormControl>
         <FormControl>
-          <FormControl.Label>Game Description</FormControl.Label>
-          <Input variant="outline" />
+          <FormControl.Label>Game Name</FormControl.Label>
+          <Input variant="outline"  value={state.gameName} onChangeText={itemValue => dispatch({type: CreateGameActions.CHANGE_GAME_NAME,  payload:itemValue })} />
         </FormControl>
-        <Button mt="2" >
+        <FormControl>
+          <FormControl.Label>Voting System</FormControl.Label>
+          <Select accessibilityLabel="Voting System" placeholder="Choose Voting System" _selectedItem={{
+            bg: "teal.600",
+            endIcon: <CheckIcon size={5} />
+          }} mt="1"
+            selectedValue={state.voitingSystem} onValueChange={itemValue => dispatch({type: CreateGameActions.CHANGE_VOITING_SYSTEM,  payload:itemValue })}
+          >
+            {
+              votingSystems.isLoading ? (<Select.Item label="loading..." value="loading" key="loading" />)
+                : (votingSystems.data || []).map( item => {
+                  return (<Select.Item label={item.name} value={item.id} key={item.id}/>)
+                })
+            }
+
+          </Select>
+        </FormControl>
+        <Button mt="2"  isDisabled={state.isButtonDisabled} onPress={handleCreateGame} >
           Create a new Game
         </Button>
 

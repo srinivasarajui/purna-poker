@@ -1,6 +1,6 @@
 import { CreateGame as CreateGameDAL } from "./game-dal";
-import {  GetEventCode, createRouter, gameChangeEmitter } from "./common";
-import type {Game} from "@prisma/client";
+import {  GetEventCode, createRouter, gameChangeEmitter,getAdminCode } from "./common";
+import type {Game, Participant} from "@prisma/client";
 import { Subscription } from "@trpc/server";
 import { z } from "zod";
 import { addStory, flipPoints, manageParticipant, moveToNextStory, moveToPreviousStory, processGameUpdate, removeStory, resetPoints, setEstimation, startGame, updateStoryDesc, updateStoryPoints } from "./game-util";
@@ -8,16 +8,21 @@ import { gameCache } from "./game-cache";
 
 const CreateGameInput = z.object({
   name: z.string(),
-  adminCode: z.string(),
   votingSystemId: z.string(),
+  userName: z.string(),
 });
 async function CreateGame({ input }: { input: z.infer<typeof CreateGameInput> }) {
+  const participant:Participant = {
+    name: input.userName,
+    isConnected: false,
+    isAdmin: true,
+  };
   return await CreateGameDAL({
     "name": input.name,
-    "adminCode": input.adminCode,
+    "adminCode": getAdminCode(),
     "didGameStart": false,
     "currentStoryId": '',
-    "participants": [],
+    "participants": [participant],
     "stories": [],
     "votingSystemId": input.votingSystemId
   });
