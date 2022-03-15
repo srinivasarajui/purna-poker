@@ -3,6 +3,7 @@ import { trpc } from '../utils/trpc';
 import React, { useEffect, useState } from "react";
 import { Game } from "backend";
 import { GameDetailsPopup } from '../components/GameDetailsPopup';
+import { useAppDataContext } from "../utils/state";
 
 enum CreateGameActions {
   CHANGE_USER_NAME = 'changeUserName',
@@ -48,15 +49,13 @@ function CreateGameReducer(state: CreateGameState, action: CreateGameAction) {
   return nextState;
 }
 
-
-
 export function CreateFragment() {
   const [showModal, setShowModal] = useState(false);
   const [game, setGame] = useState<Game>();
+  const { setGameDetails } = useAppDataContext();
   const votingSystems = trpc.useQuery(['votingSystems.list']);
   const mutation = trpc.useMutation('game.createGame', {
     async onSuccess(data: Game) {
-      console.log('create game success', data);
       setGame(data);
       setShowModal(true);
     },
@@ -76,9 +75,15 @@ export function CreateFragment() {
       userName: state.userName
     });
   };
+  const moveNext = () => {
+    setShowModal(false);
+    if (game) {
+      setGameDetails(game.id, state.userName, game.adminCode);
+    }
+  }
   return (<Center w="100%">
 
-    <GameDetailsPopup showModal={showModal} game={game} closeModel={() => setShowModal(false)} />
+    <GameDetailsPopup showModal={showModal} game={game} closeModel={moveNext} />
     <Box p="2" w="90%" py="8">
       <Heading size="lg" fontWeight="semibold">
         Create a new game

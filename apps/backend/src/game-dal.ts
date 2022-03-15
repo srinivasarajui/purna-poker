@@ -1,14 +1,16 @@
 import { Game } from "@prisma/client";
 import { prisma } from "./common";
-
 export async function UpdateGame(game: Game) {
   game.updatedAt = new Date();
+  const updatedGame: any = { ...game };
+  updatedGame.id = undefined;
   await prisma.game.update({
     where: {
       id: game.id
     },
-    data: game
+    data: updatedGame
   });
+  console.log("Game updated");
 }
 
 export interface NewGame extends Omit<Game, 'id' | 'createdAt' | 'updatedAt'> { }

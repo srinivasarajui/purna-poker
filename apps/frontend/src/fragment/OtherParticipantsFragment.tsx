@@ -2,8 +2,10 @@
 import { Box, FlatList, Heading, Avatar, HStack, VStack, Text, Spacer, Center, Badge } from "native-base";
 import React from "react";
 import { FontAwesome } from '@expo/vector-icons';
+import { Game } from "backend";
+import { GameProps } from "../utils/types";
 
-export function OtherParticipantsFragment() {
+export function OtherParticipantsFragment(props: GameProps) {
   const data = [{
     id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
     fullName: "Aafreen Khan",
@@ -32,31 +34,31 @@ export function OtherParticipantsFragment() {
   }];
   return (
     <Center width="100%">
-    <Box flex={1}  width="90%" maxHeight="100%">
-    <Heading fontSize="xl" p="4" pb="3">
-      Users
-    </Heading>
-    <FlatList data={data} renderItem={({
-      item
-    }) => <Box borderBottomWidth="1" _dark={{
-      borderColor: "gray.600"
-    }} borderColor="coolGray.200" pl="4" pr="5" py="2">
-        <HStack space={3} alignItems="center">
-          <Avatar size="6" bgColor="green.500"  >
-            { //<FontAwesome name="chain-broken" size={24} color="white" />
-            }
-            <FontAwesome name="chain" size={12} color="black" />
-          </Avatar>
+      <Box flex={1} width="90%" maxHeight="100%">
+        <Heading fontSize="xl" p="4" pb="3">
+          Users
+        </Heading>
+        <FlatList data={data} renderItem={({
+          item
+        }) => <Box borderBottomWidth="1" _dark={{
+          borderColor: "gray.600"
+        }} borderColor="coolGray.200" pl="4" pr="5" py="2">
+            <HStack space={3} alignItems="center">
+              <Avatar size="6" bgColor="green.500"  >
+                { //<FontAwesome name="chain-broken" size={24} color="white" />
+                }
+                <FontAwesome name="chain" size={12} color="black" />
+              </Avatar>
 
-            <Text _dark={{
-              color: "warmGray.50"
-            }} color="coolGray.800" bold>
-              {item.fullName}
-            </Text>
-            <Spacer />
-          <Badge colorScheme="success">5 Points</Badge>
+              <Text _dark={{
+                color: "warmGray.50"
+              }} color="coolGray.800" bold>
+                {item.fullName}
+              </Text>
+              <Spacer />
+              <Badge colorScheme="success">5 Points</Badge>
 
-        </HStack>
-      </Box>} keyExtractor={item => item.id} />
+            </HStack>
+          </Box>} keyExtractor={item => item.id} />
       </Box></Center>);
 }

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { trpc } from './utils/trpc';
+import { createWSClient, wsLink } from '@trpc/client/links/wsLink';
 
 import {
   Center,
@@ -14,16 +15,23 @@ import { LandingPage } from "./pages/LandingPage";
 
 import { GamePage } from "./pages/GamePage";
 import { AppStateProvider, useAppDataContext } from "./utils/state";
+import { createTRPCClient } from "@trpc/client";
+import { AppRouter } from "backend";
 
+const wsClient = createWSClient({
+  url: `ws://localhost:3000`,
+});
+const client = createTRPCClient<AppRouter>({
+  links: [
+    wsLink({
+      client: wsClient,
+    }),
+  ],
+});
 export default function Main() {
   const [queryClient] = useState(() => new QueryClient());
-  const [trpcClient] = useState(() =>
-    trpc.createClient({
-      url: 'http://localhost:3000/api',
-    }),
-  );
   return (
-    <trpc.Provider client={trpcClient} queryClient={queryClient}>
+    <trpc.Provider client={client} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         <NativeBaseProvider theme={theme}>
           <AppStateProvider >
@@ -37,7 +45,7 @@ export default function Main() {
 
 function Body() {
   const { bgColor } = useThemeConfig();
-  const { isInGame } = useAppDataContext()
+  const { isInGame } = useAppDataContext();
   return (
     <VStack alignItems="center" flex={1}>
       <AppBar title="PSP" menu={isInGame ? (

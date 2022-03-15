@@ -1,6 +1,6 @@
 import { CreateGame as CreateGameDAL } from "./game-dal";
-import {  GetEventCode, createRouter, gameChangeEmitter,getAdminCode } from "./common";
-import type {Game, Participant} from "@prisma/client";
+import { GetEventCode, createRouter, gameChangeEmitter, getAdminCode } from "./common";
+import type { Game, Participant } from "@prisma/client";
 import { Subscription } from "@trpc/server";
 import { z } from "zod";
 import { addStory, flipPoints, manageParticipant, moveToNextStory, moveToPreviousStory, processGameUpdate, removeStory, resetPoints, setEstimation, startGame, updateStoryDesc, updateStoryPoints } from "./game-util";
@@ -12,7 +12,7 @@ const CreateGameInput = z.object({
   userName: z.string(),
 });
 async function CreateGame({ input }: { input: z.infer<typeof CreateGameInput> }) {
-  const participant:Participant = {
+  const participant: Participant = {
     name: input.userName,
     isConnected: false,
     isAdmin: true,
@@ -35,8 +35,8 @@ const AddParticipantInput = z.object({
   isConnected: z.boolean(),
 })
 async function AddParticipant({ input }: { input: z.infer<typeof AddParticipantInput> }) {
-  processGameUpdate(input.gameId, (game:Game)=>{
-    game.participants.push({...input})
+  processGameUpdate(input.gameId, (game: Game) => {
+    game.participants.push({ ...input })
   });
 }
 
@@ -78,7 +78,7 @@ const UpdateStoryDescInput = z.object({
 })
 async function UpdateStoryDesc({ input }: { input: z.infer<typeof UpdateStoryDescInput> }) {
   processGameUpdate(input.gameId, (game: Game) => {
-    updateStoryDesc(game, input.storyId,input.description);
+    updateStoryDesc(game, input.storyId, input.description);
   });
 }
 
@@ -93,7 +93,7 @@ async function StartGame({ input }: { input: z.infer<typeof GameIdInput> }) {
 
 async function StopGame({ input }: { input: z.infer<typeof GameIdInput> }) {
   processGameUpdate(input.gameId, (game: Game) => {
-    game.didGameStart=false;
+    game.didGameStart = false;
   });
 }
 
@@ -128,7 +128,7 @@ const SetEstimationInput = z.object({
 })
 async function SetEstimation({ input }: { input: z.infer<typeof SetEstimationInput> }) {
   processGameUpdate(input.gameId, (game: Game) => {
-    setEstimation(game,input.userName,input.points);
+    setEstimation(game, input.userName, input.points);
   });
 }
 
@@ -138,7 +138,7 @@ const UpdatePointsInput = z.object({
 })
 async function UpdatePoints({ input }: { input: z.infer<typeof UpdatePointsInput> }) {
   processGameUpdate(input.gameId, (game: Game) => {
-    updateStoryPoints(game,input.points);
+    updateStoryPoints(game, input.points);
   });
 }
 
@@ -151,14 +151,14 @@ async function gameSubscription({ input }: { input: z.infer<typeof OnGameUpdated
   return new Subscription<Game>(async (emit) => {
     const onGameChange = (data: Game) => emit.data(data);
     const game = await gameCache.get(input.gameId);
-    manageParticipant(game,input.userName,true,input.adminCode);
+    manageParticipant(game, input.userName, true, input.adminCode);
     const eventCode = GetEventCode(input.gameId);
     gameChangeEmitter.on(eventCode, onGameChange);
     return () => {
       gameChangeEmitter.off(eventCode, onGameChange);
       manageParticipant(game, input.userName, false, input.adminCode);
-      const anyParticipant = game.participants.map(item => item.isConnected).reduce( (item,is) => is || item, false);
-      if (!anyParticipant){
+      const anyParticipant = game.participants.map(item => item.isConnected).reduce((item, is) => is || item, false);
+      if (!anyParticipant) {
         gameCache.RemoveFromCache(input.gameId)
       }
 
@@ -173,7 +173,6 @@ async function GetGameById({ input }: { input: z.infer<typeof GameIdInput> }) {
 
 export const GameRouter = createRouter()
   .mutation("createGame", { input: CreateGameInput, resolve: CreateGame })
-  .mutation("getbyId", { input: GameIdInput, resolve: GetGameById })
   .mutation("addParticipant", { input: AddParticipantInput, resolve: AddParticipant })
   .mutation("changeGameName", { input: ChangeGameNameInput, resolve: ChangeGameName })
   .mutation("addStory", { input: AddStoryInput, resolve: AddStory })
@@ -187,4 +186,5 @@ export const GameRouter = createRouter()
   .mutation("resetPoints", { input: GameIdInput, resolve: ResetPoints })
   .mutation("setEstimation", { input: SetEstimationInput, resolve: SetEstimation })
   .mutation("updatePoints", { input: UpdatePointsInput, resolve: UpdatePoints })
-  .subscription("gameUpdated", { input: OnGameUpdated,resolve: gameSubscription});
+  .query("getbyId", { input: GameIdInput, resolve: GetGameById })
+  .subscription("gameUpdated", { input: OnGameUpdated, resolve: gameSubscription });

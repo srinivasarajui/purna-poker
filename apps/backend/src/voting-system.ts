@@ -8,21 +8,22 @@ let votingSystemsCache: VotingSystem[];
 let votingSystemsMap: VotingSystemMap;
 
 async function GetVotingSystems() {
-    if (!votingSystemsCache){
+
+    if (!votingSystemsCache) {
         votingSystemsCache = await prisma.votingSystem.findMany();
     }
     return votingSystemsCache;
 }
 
-async function GetVotingSystem(id:string) {
-    if (!votingSystemsMap){
+async function GetVotingSystem(id: string) {
+    if (!votingSystemsMap) {
         votingSystemsMap = (await GetVotingSystems()).reduce((map, obj) => { map[obj.id] = obj; return map }, {} as VotingSystemMap)
     }
     return votingSystemsMap[id];
 }
 
-export async function roundupPoints(votingSystemId: string,avg:number) {
-  const vs=  await GetVotingSystem(votingSystemId);
+export async function roundupPoints(votingSystemId: string, avg: number) {
+    const vs = await GetVotingSystem(votingSystemId);
     return vs.points.filter(v => v.storyPoints >= 0).filter(v => v.storyPoints >= avg)[0].storyPoints
 }
 
@@ -34,5 +35,5 @@ async function GetVotingSystemById({ input }: { input: z.infer<typeof GetVotingS
 }
 
 export const VotingSystemsRouter = createRouter()
-.query("list", {resolve: GetVotingSystems})
-.query("getbyId", { input: GetVotingSystemByIdInput, resolve: GetVotingSystemById });
+    .query("list", { resolve: GetVotingSystems })
+    .query("getbyId", { input: GetVotingSystemByIdInput, resolve: GetVotingSystemById });
