@@ -4,8 +4,6 @@ import { Box, Heading, VStack, FormControl, Input, Button, Center, HStack, Text,
 
 import React from "react";
 import { TabItem, Tabs } from "../components/Tabs";
-import { CreateFragment } from "../fragment/CreateFragment";
-import { JoinFragment } from "../fragment/JoinFragment";
 import { MainGameFragment } from "../fragment/MainGameFragment";
 import { OtherParticipantsFragment } from "../fragment/OtherParticipantsFragment";
 import { StoriesFragment } from "../fragment/StoriesFragment";

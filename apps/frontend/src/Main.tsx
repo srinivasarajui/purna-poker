@@ -12,6 +12,9 @@ import { AppBar } from "./components/AppBar";
 import { GameMenu } from "./components/GameMenu";
 import { LandingPage } from "./pages/LandingPage";
 
+import { GamePage } from "./pages/GamePage";
+import { AppStateProvider, useAppDataContext } from "./utils/state";
+
 export default function Main() {
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
@@ -23,7 +26,9 @@ export default function Main() {
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         <NativeBaseProvider theme={theme}>
-          <Body />
+          <AppStateProvider >
+            <Body />
+          </AppStateProvider>
         </NativeBaseProvider>
       </QueryClientProvider>
     </trpc.Provider>
@@ -32,16 +37,22 @@ export default function Main() {
 
 function Body() {
   const { bgColor } = useThemeConfig();
+  const { isInGame } = useAppDataContext()
   return (
-
     <VStack alignItems="center" flex={1}>
-      <AppBar title="PSP" menu={<GameMenu />} />
+      <AppBar title="PSP" menu={isInGame ? (
+        <GameMenu />
+      ) : undefined} />
       <Center
         bg={bgColor}
         flex={1}
         width="100%"
       >
-        <LandingPage />
+        {isInGame ? (
+          <GamePage />
+        ) : (
+          <LandingPage />
+        )}
       </Center>
     </VStack>
   )

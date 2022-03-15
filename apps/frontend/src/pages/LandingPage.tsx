@@ -27,22 +27,23 @@ function LandingTabs() {
   )
 
 }
+
 export function LandingPage() {
   const isTab = useBreakpointValue({
     base: true,
     md: false
   });
-  if(isTab){
+  if (isTab) {
     return <LandingTabs />
   }
   return (
     <HStack flex={1}
       width="100%">
       <Container flex={1}>
-      <CreateFragment />
+        <CreateFragment />
       </Container>
       <Container flex={1}>
-      <JoinFragment />
+        <JoinFragment />
       </Container>
     </HStack>
   );
