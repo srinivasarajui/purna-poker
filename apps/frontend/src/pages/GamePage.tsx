@@ -6,7 +6,7 @@ import { Box, Heading, VStack, FormControl, Input, Button, Center, HStack, Text,
 import React, { useEffect, useMemo, useState } from "react";
 import { TabItem, Tabs } from "../components/Tabs";
 import { MainGameFragment } from "../fragment/MainGameFragment";
-import { OtherParticipantsFragment } from "../fragment/OtherParticipantsFragment";
+import { ParticipantsFragment } from "../fragment/ParticipantsFragment";
 import { StoriesFragment } from "../fragment/StoriesFragment";
 import { useAppDataContext } from "../utils/state";
 import { trpc } from "../utils/trpc";
@@ -17,7 +17,7 @@ function GameTabs(props: GameProps) {
     {
       icon: <MaterialCommunityIcons name={"newspaper-plus"} />,
       text: 'Others',
-      component: <OtherParticipantsFragment {...props} />
+      component: <ParticipantsFragment {...props} />
     },
     {
       icon: <FontAwesome5 name="sign-in-alt" />,
@@ -41,7 +41,7 @@ function GameFullPage(props: GameProps) {
   return <HStack flex={1}
     width="100%">
     <Container flex={1}>
-      <OtherParticipantsFragment {...props} />
+      <ParticipantsFragment {...props} />
     </Container>
     <Container flex={1}>
       <MainGameFragment {...props} />

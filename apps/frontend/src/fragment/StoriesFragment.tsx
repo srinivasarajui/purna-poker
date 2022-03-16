@@ -1,28 +1,35 @@
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Avatar, Badge, Box, Button, FlatList, Heading, HStack, ScrollView, View, Spacer, Text, Center, Icon } from "native-base";
 import React from "react";
+import { StoryManagePopup } from "../components/StoryManagePopup";
+import { trpc } from "../utils/trpc";
 import { GameProps } from "../utils/types";
 
 export function StoriesFragment(props: GameProps) {
-  const data = [{
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    fullName: "Aafreen Khan",
-    timeStamp: "12:47 PM",
-    recentText: "Good Day!",
-  }, {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    fullName: "Sujitha Mathur",
-    timeStamp: "11:11 PM",
-    recentText: "Cheer up, there!",
+  const [showModal, setShowModal] = React.useState(false);
+  const [modalStoryDesc, setModalStoryDesc] = React.useState("");
+  const addStoryMutation = trpc.useMutation("game.addStory");
+  const addStoryClick = () => {
+    // setModalStoryDesc("");
+    setShowModal(true);
+    console.log("addStoryClick");
   }
-  ];
+  const closeModal = () => {
+    setShowModal(false);
+  }
+  const addStory = (description: string) => {
+    addStoryMutation.mutate({ gameId: props.game.id, description: description });
+    setShowModal(false);
+  }
   return <Center width="100%" >
+    <StoryManagePopup showModal={showModal} storyDesc="" onClose={closeModal} onAction={addStory} ></StoryManagePopup>
     <Box flex={1} width="90%" maxHeight="100%">
       <Heading fontSize="xl" p="4" pb="3">
         Stories
       </Heading>
       <HStack gap={2} space={2}   >
-        <Button leftIcon={<Icon as={Ionicons} name="add" size="xs" />}>Add A New Story</Button>
+        <Button onPress={addStoryClick}
+          leftIcon={<Icon as={Ionicons} name="add" size="xs" />} >Add A New Story</Button>
         <Button leftIcon={<Icon as={Ionicons} name="download" size="xs" />}>Download</Button>
       </HStack>
       <View >
@@ -32,28 +39,33 @@ export function StoriesFragment(props: GameProps) {
           minW: "72"
 
         }}>
-          <FlatList data={data} renderItem={({
-            item
-          }) => <Box borderBottomWidth="1" _dark={{
-            borderColor: "gray.600"
-          }} borderColor="coolGray.200" pl="4" pr="5" py="2">
-              <HStack space={3} alignItems="center">
-                <Avatar size="48px" bgColor="green.500"  >
-                  { //<FontAwesome name="chain-broken" size={24} color="white" />
-                  }
-                  <FontAwesome name="chain" size={24} color="black" />
-                </Avatar>
+          {
+            props.game.stories.length > 0 ?
+              <FlatList data={props.game.stories} renderItem={({
+                item
+              }) => <Box borderBottomWidth="1" _dark={{
+                borderColor: "gray.600"
+              }} borderColor="coolGray.200" pl="4" pr="5" py="2">
+                  <HStack space={3} alignItems="center">
+                    <Avatar size="48px" bgColor="green.500"  >
+                      { //<FontAwesome name="chain-broken" size={24} color="white" />
+                      }
+                      <FontAwesome name="chain" size={24} color="black" />
+                    </Avatar>
 
-                <Text _dark={{
-                  color: "warmGray.50"
-                }} color="coolGray.800" bold>
-                  {item.fullName}
-                </Text>
-                <Spacer />
-                <Badge colorScheme="success">5 Points</Badge>
+                    <Text _dark={{
+                      color: "warmGray.50"
+                    }} color="coolGray.800" bold>
+                      {item.description}
+                    </Text>
+                    <Spacer />
+                    <Badge colorScheme="success">5 Points</Badge>
 
-              </HStack>
-            </Box>} keyExtractor={item => item.id} />
+                  </HStack>
+                </Box>} keyExtractor={item => item.id} />
+              : <Center><Text >No stories yet</Text></Center>
+          }
+
         </ScrollView>
       </View>
 
