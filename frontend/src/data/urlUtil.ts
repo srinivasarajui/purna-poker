@@ -5,8 +5,8 @@ let loadBaseURL: string;
 function populateURLs() {
   let wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
   if (window.location.hostname === 'localhost') {
-    wsURL = `${wsProtocol}//${window.location.hostname}:8080/socket`;
-    gqlURL = `${window.location.protocol}//${window.location.hostname}:8080/graphql`;
+    wsURL = `${wsProtocol}//${window.location.hostname}:5000/socket`;
+    gqlURL = `${window.location.protocol}//${window.location.hostname}:5000/graphql`;
   } else {
     wsURL = `${wsProtocol}//${window.location.host}/socket`;
     gqlURL = `${window.location.protocol}//${window.location.host}/graphql`;

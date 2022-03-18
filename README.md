@@ -53,3 +53,7 @@ Please adhere to this project's `code of conduct`.
 ## Support
 
 For support, email srinivasarajui@gmail.com or raise a bug [here](https://github.com/srinivasarajui/purna-scrum-poker/issues).
+
+### commands
+docker build -f backend/src/main/docker/Dockerfile.jvm -t srinivasarajui/psp-v1 backend
+docker push srinivasarajui/psp-v1
