@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["mongodb"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type ParticipantEstimation {
+  name String
+  storyPoints Int
+}
+
+type Participant{
+  name String
+  isAdmin Boolean
+  isConnected Boolean
+}
+
+type Story{
+  id String
+  description String
+  isEstimated Boolean
+  areCardsOpen Boolean
+  storyPoints Int
+  participantEstimations ParticipantEstimation[]
+}
+
+model Game{
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  adminCode   String
+  didGameStart Boolean
+  currentStoryId String
+  votingSystemId       String
+  participants Participant[]
+  stories Story[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+}
+
+enum PointsCategory  {
+   GREEN
+   RED
+   QUESTION
+}
+
+type VotingPoints{
+  displayText String
+  storyPoints Int
+  category PointsCategory
+}
+
+model VotingSystem  {
+  id String @id @map("_id")
+  name String
+  points VotingPoints[]
+}
