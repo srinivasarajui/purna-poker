@@ -58,18 +58,13 @@ export function GamePage() {
   });
   const { gameId, userId, adminCode } = useAppDataContext();
   const [game, setGame] = useState<Game>();
-  const result = trpc.useQuery(['game.getbyId', { gameId }])
   trpc.useSubscription(['game.gameUpdated', { gameId, userName: userId, adminCode }], {
     onNext(n) {
       setGame(n);
+      console.log('gameUpdated', n);
     },
   });
-  useEffect(() => {
-    if (result.isFetched) {
-      setGame(result.data);
-    }
-    console.log(result.data);
-  }, [result]);
+
 
   const isAdmin = !!useMemo(() => game?.participants.find(p => p.name === userId)?.isAdmin, [game?.participants, userId]);
   return game ? (

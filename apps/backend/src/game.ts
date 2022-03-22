@@ -154,6 +154,7 @@ async function gameSubscription({ input }: { input: z.infer<typeof OnGameUpdated
     manageParticipant(game, input.userName, true, input.adminCode);
     const eventCode = GetEventCode(input.gameId);
     gameChangeEmitter.on(eventCode, onGameChange);
+    onGameChange(game);
     return () => {
       gameChangeEmitter.off(eventCode, onGameChange);
       manageParticipant(game, input.userName, false, input.adminCode);

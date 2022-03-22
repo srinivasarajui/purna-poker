@@ -21,6 +21,7 @@
     "@trpc/server": "^9.20.1",
     "backend": "*",
     "expo": "~43.0.2",
+    "expo-clipboard": "~2.0.3",
     "expo-constants": "~12.1.3",
     "expo-font": "~10.0.3",
     "expo-status-bar": "~1.1.0",
