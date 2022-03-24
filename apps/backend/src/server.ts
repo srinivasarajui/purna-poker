@@ -7,6 +7,7 @@ import { fastifyTRPCPlugin } from '@trpc/server/adapters/fastify';
 import { router } from "@trpc/server";
 import { VotingSystemsRouter } from "./voting-system";
 import { GameRouter } from './game';
+import path from 'path';
 export const appRouter = router()
     .merge('game.', GameRouter)
     .merge('votingSystems.', VotingSystemsRouter);
@@ -15,6 +16,13 @@ const PORT = process.env.PORT || 5000;
 
 export default function startServer() {
     const server = fastify({ logger: { prettyPrint: environment === 'development' } })
+    const staticPath = path.join(__dirname, '..', 'web-site');
+    console.log(staticPath.toString());
+    server.register(require('fastify-static'), {
+        root: path.join(__dirname, '..', 'web-site'),
+        prefix: '/', // optional: default '/'
+    })
+
     server.register(require('fastify-healthcheck'))
     server.register(ws);
     server.register(fp(fastifyTRPCPlugin), {
@@ -28,6 +36,6 @@ export default function startServer() {
             console.error(err)
             process.exit(1)
         }
-        console.log(`Server listening at ${address}`)
+        console.log(`Server listening at ${address} in ${staticPath}`)
     });
 }
