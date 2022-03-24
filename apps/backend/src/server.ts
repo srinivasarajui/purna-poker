@@ -12,7 +12,7 @@ export const appRouter = router()
     .merge('game.', GameRouter)
     .merge('votingSystems.', VotingSystemsRouter);
 const environment = 'development';
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5050;
 
 export default function startServer() {
     const server = fastify({ logger: { prettyPrint: environment === 'development' } })
@@ -31,7 +31,7 @@ export default function startServer() {
         trpcOptions: { router: appRouter },
     });
 
-    server.listen(PORT, (err, address) => {
+    server.listen(PORT, '0.0.0.0', (err, address) => {
         if (err) {
             console.error(err)
             process.exit(1)

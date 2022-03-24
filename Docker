@@ -1,0 +1,40 @@
+# STAGE Backend Build
+FROM node:lts as backend-builder
+WORKDIR /app
+RUN yarn global add typescript
+RUN yarn global add prisma
+RUN mkdir apps && cd apps && mkdir backend
+COPY tsconfig.base.json .
+COPY package.json .
+COPY apps/backend/package.json apps/backend/package.json
+RUN yarn install
+COPY apps/backend/ apps/backend/
+RUN yarn workspace backend prisma generate
+RUN yarn workspace backend build
+
+# STAGE Backend Build
+FROM node:lts as frontend-builder
+WORKDIR /app
+RUN yarn global add typescript
+RUN mkdir apps && cd apps && mkdir frontend
+COPY package.json .
+COPY apps/frontend/package.json apps/frontend/package.json
+RUN yarn install
+COPY apps/frontend/ apps/frontend/
+RUN yarn workspace frontend build:web
+
+FROM node:lts
+WORKDIR /app
+RUN mkdir apps && cd apps && mkdir backend && mkdir web-site && mkdir prisma
+RUN yarn global add prisma
+COPY package.json .
+COPY apps/backend/package.json apps/backend/package.json
+RUN yarn install --production
+COPY --from=backend-builder /app/apps/backend/prisma apps/backend/prisma
+RUN yarn workspace backend prisma generate
+COPY --from=backend-builder /app/apps/backend/build/ apps/backend/build/
+COPY --from=frontend-builder /app/apps/frontend/web-build/ apps/backend/web-site/
+EXPOSE 5050
+CMD yarn workspace backend start:prod
+
+
