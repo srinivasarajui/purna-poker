@@ -1,19 +1,21 @@
-# STAGE Backend Build
-FROM node:lts as backend-builder
+### BASE ###
+FROM node:16-bullseye-slim AS base
+RUN apt-get update && apt-get install --no-install-recommends --yes openssl
 WORKDIR /app
-RUN yarn global add typescript
-RUN yarn global add prisma
-RUN mkdir apps && cd apps && mkdir backend
-COPY tsconfig.base.json .
-COPY package.json .
+
+# STAGE Backend Build
+FROM base as backend-builder
+COPY *.json yarn.lock ./
 COPY apps/backend/package.json apps/backend/package.json
-RUN yarn install
+RUN yarn install --production --pure-lockfile
+RUN cp -RL apps/backend/node_modules/ /tmp/node_modules/
+RUN yarn install --pure-lockfile
 COPY apps/backend/ apps/backend/
 RUN yarn workspace backend prisma generate
 RUN yarn workspace backend build
 
-# STAGE Backend Build
-FROM node:lts as frontend-builder
+# STAGE frontend Build
+FROM base as frontend-builder
 WORKDIR /app
 RUN yarn global add typescript
 RUN mkdir apps && cd apps && mkdir frontend
@@ -23,18 +25,13 @@ RUN yarn install
 COPY apps/frontend/ apps/frontend/
 RUN yarn workspace frontend build:web
 
-FROM node:lts
-WORKDIR /app
-RUN mkdir apps && cd apps && mkdir backend && mkdir web-site && mkdir prisma
-RUN yarn global add prisma
-COPY package.json .
-COPY apps/backend/package.json apps/backend/package.json
-RUN yarn install --production
-COPY --from=backend-builder /app/apps/backend/prisma apps/backend/prisma
-RUN yarn workspace backend prisma generate
-COPY --from=backend-builder /app/apps/backend/build/ apps/backend/build/
-COPY --from=frontend-builder /app/apps/frontend/web-build/ apps/backend/web-site/
+FROM base
+COPY --from=backend-builder /tmp/node_modules/ node_modules/
+COPY --from=backend-builder /app/apps/backend/node_modules/.prisma/client/ node_modules/.prisma/client/
+COPY --from=backend-builder /app/apps/backend/build/ build/
+COPY --from=frontend-builder /app/apps/frontend/web-build/ web-site/
+USER node
 EXPOSE 5050
-CMD yarn workspace backend start:prod
+CMD node build/index.js
 
 
