@@ -8,7 +8,7 @@ FROM base as backend-builder
 COPY *.json yarn.lock ./
 COPY apps/backend/package.json apps/backend/package.json
 RUN yarn install --production --pure-lockfile
-RUN cp -RL apps/backend/node_modules/ /tmp/node_modules/
+RUN cp -RL node_modules/ /tmp/node_modules/
 RUN yarn install --pure-lockfile
 COPY apps/backend/ apps/backend/
 RUN yarn workspace backend prisma generate
@@ -31,7 +31,7 @@ COPY --from=backend-builder /app/apps/backend/node_modules/.prisma/client/ node_
 COPY --from=backend-builder /app/apps/backend/build/ build/
 COPY --from=frontend-builder /app/apps/frontend/web-build/ web-site/
 USER node
-EXPOSE 5050
+EXPOSE 8080
 CMD node build/index.js
 
 

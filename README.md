@@ -24,6 +24,16 @@ Pre-Prod - https://psp-stage.cisne.in
 
 **Server:** NodeJS, Trpc, mongodb
 
+## Docker
+Command to build docker images.
+
+docker build --pull --rm -f "Docker" -t purnascrumpoker:latest "."
+
+Command to execute from docker image.
+docker run --rm -it -e DATABASE_URL='mongodb+srv://admin:<Password>@purnapokerdev.xqy5s.mongodb.net/PurnaPokerDev?retryWrites=true&w=majority' \
+ -p 8080:8080 purnascrumpoker:latest
+Note: Password should be replaced.
+
 ## Features
 
 - Real-time updates to support effective distributed planning

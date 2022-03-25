@@ -12,7 +12,7 @@ export const appRouter = router()
     .merge('game.', GameRouter)
     .merge('votingSystems.', VotingSystemsRouter);
 const environment = 'development';
-const PORT = process.env.PORT || 5050;
+const PORT = process.env.PORT || 8080;
 
 export default function startServer() {
     const server = fastify({ logger: { prettyPrint: environment === 'development' } })
